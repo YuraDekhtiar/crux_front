@@ -30,7 +30,8 @@
         <td> <input type="checkbox" v-model="selected" :value="index"/></td>
         <td>{{ item.url }}</td>
         <td>{{ item.last_tracking_date.substring(0,10) }}</td>
-        <td v-if="( item.success===1 )">Success</td>
+        <td v-if="item.success" class="bg-success">Success</td>
+        <td v-else class="bg-warning">No success</td>
       </tr>
       </tbody>
     </table>
@@ -77,13 +78,13 @@ export default {
       this.loading = false;
     },
     async addData() {
-      let url = {url:['https://auto.ria.com/uk/legkovie/','https://dom.ria.com/uk/prodazha-kvartir/']}
+      let data = {url:['https://auto.ria.com/uk/legkovie/','https://dom.ria.com/uk/prodazha-kvartir/']}
       const response = await fetch('http://127.0.0.1:3000/dataFetcher/add_url', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(url)
+        body: JSON.stringify(data)
       });
       let result = await response.json();
       console.log('Успех:', JSON.stringify(result));

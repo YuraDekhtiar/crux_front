@@ -100,9 +100,6 @@ export default {
     },
 
   },
-  uuid (index) {
-    return `uuid-${index}-${Date.now()}-${Math.random().toFixed(2)}`;
-  }
 }
 </script>
 

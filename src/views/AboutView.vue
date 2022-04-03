@@ -77,13 +77,13 @@ export default {
       this.loading = false;
     },
     async addData() {
-      let url = ['https://auto.ria.com/uk/legkovie/','https://dom.ria.com/uk/prodazha-kvartir/']
+      let url = {url:['https://auto.ria.com/uk/legkovie/','https://dom.ria.com/uk/prodazha-kvartir/']}
       const response = await fetch('http://127.0.0.1:3000/dataFetcher/add_url', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'Content-Type': 'application/json'
         },
-        body: url
+        body: JSON.stringify(url)
       });
       let result = await response.json();
       console.log('Успех:', JSON.stringify(result));

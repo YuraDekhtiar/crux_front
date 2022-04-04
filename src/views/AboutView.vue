@@ -18,7 +18,8 @@
     </div>
     </div>
     </div>
-    <table class="table-bordered w-75 mx-auto">
+    <Preloader v-if="isLoading"/>
+    <table v-else class="table-bordered w-75 mx-auto">
       <thead>
       <tr>
         <th><input type="checkbox" v-model="selectedAll"><span id="all">All</span></th>
@@ -40,13 +41,19 @@
   </div>
 </template>
 <script>
+import Preloader from '../components/Preloader'
+
 export default {
   name: "AboutView",
+  components: {
+    Preloader,
+  },
   data() {
     return {
       data: '',
       search: '',
       selected: [],
+      isLoading: true,
     }
   },
   mounted() {
@@ -81,6 +88,7 @@ export default {
           method: 'GET',
         })
             .then(res => res.json())
+        this.isLoading = false;
       } catch (e) {
         console.log(e)
       }

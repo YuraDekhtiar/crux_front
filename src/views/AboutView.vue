@@ -89,6 +89,7 @@ export default {
       } catch (e) {
         console.log(e)
       }
+      this.url= '';
       this.fetchData();
     },
     async deleteData() {

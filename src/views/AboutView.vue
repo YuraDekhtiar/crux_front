@@ -3,16 +3,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <div class="about">
-    <div class="input-group my">
-      <form >
-        <div class="form-group" @submit.prevent="addData">
-          <input type="text" class="form-control" aria-describedby="button-addon1" placeholder="Enter url" v-model="url">
+    <div class="float-right d-flex flex-row">
+    <div class="input-group">
+      <form>
+        <div class="p-2" @submit.prevent="addData">
+          <input type="text" aria-describedby="button-addon2" placeholder="Enter url" v-model="url">
         </div>
       </form>
-      <div class="col-xs-6">
+      <div class="col-xs-6 p-2">
         <button type="button" class="btn btn-secondary" id="add" v-on:click="addData">Add</button>
         <button type="button" class="btn btn-secondary" id="delete" v-on:click="deleteData">Delete</button>
       </div>
+    </div>
     </div>
     <table class="table-bordered ttt">
       <thead>
@@ -111,11 +113,6 @@ export default {
 
 <style>
 
-.my {
-  width: 1500px;
-  margin-left: 82em;
-  margin-right: auto;
-}
 .ttt {
   margin-bottom: 1em;
   margin-left: auto;

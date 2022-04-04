@@ -3,20 +3,22 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <div class="about">
-    <div class="float-right d-flex flex-row">
-    <div class="input-group">
-      <form>
-        <div class="p-2" @submit.prevent="addData">
-          <input type="text" aria-describedby="button-addon2" placeholder="Enter url" v-model="url">
-        </div>
-      </form>
-      <div class="col-xs-6 p-2">
-        <button type="button" class="btn btn-secondary" id="add" v-on:click="addData">Add</button>
-        <button type="button" class="btn btn-secondary" id="delete" v-on:click="deleteData">Delete</button>
+    <div class="d-flex">
+    <nav class="mx-auto p-3" style="width: 500px" >
+      <div class="input-group w-100 align-items-center">
+        <input class="form-control mr-2" type="search" placeholder="Search" v-model="search">
+        <button class="btn h-75 mr-2 w-25" type="button" id="search">Search</button>
       </div>
+    </nav>
+    <div class="mx-auto p-3" style="width: 500px">
+    <div class="input-group w-100 align-items-center" style="height: 50px" >
+        <input type="text" class="form-control mr-2" placeholder="Enter url" v-model="url">
+        <button type="button" class="h-75 w-25 mr-2 btn" id="add" v-on:click="addData">Add</button>
+        <button type="button" class="h-75 w-25 btn" id="delete" v-on:click="deleteData">Delete</button>
     </div>
     </div>
-    <table class="table-bordered ttt">
+    </div>
+    <table class="table-bordered w-75 mx-auto">
       <thead>
       <tr>
         <th><input type="checkbox" v-model="selectedAll"><span id="all">All</span></th>
@@ -43,6 +45,7 @@ export default {
   data() {
     return {
       data: '',
+      search: '',
       selected: [],
     }
   },
@@ -63,7 +66,12 @@ export default {
         }
         this.selected = selected;
       }
-    }
+    },
+    filteredList() {
+      return this.data.filter(one => {
+        return one.url.toLowerCase().includes(this.search.toLowerCase())
+      })
+    },
   },
   methods: {
     async fetchData() {
@@ -112,29 +120,19 @@ export default {
 </script>
 
 <style>
-
-.ttt {
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 1500px;
-  background-color: transparent;
-  display: table;
-  border-collapse: separate;
-  box-sizing: border-box;
-  text-indent: initial;
-  border-spacing: 2px;
-  border-color: grey;
-}
-
 #all{
   margin: 5px;
 }
-
+#search{
+  color: white;
+  background-color: #256799;
+}
 #add{
+  color: white;
   background-color: #256799;
 }
 #delete{
+  color: white;
   background-color: #db5c4c;
 }
 </style>

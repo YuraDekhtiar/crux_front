@@ -4,17 +4,17 @@
   </head>
   <div class="about">
     <div class="manag">
-      <form >
+      <form id="reset">
         <div class="form-group" @submit.prevent="addData">
-          <input type="url" class="control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter url" v-model="url">
+          <input type="text" class="control" placeholder="Enter url" v-model="url">
         </div>
-      </form>
       <div class="btn-group" role="group" aria-label="...">
         <div class="col-xs-6 kn">
-          <button type="button" class="btn btn-secondary ma" id="add" v-on:click="addData">Add</button>
+          <button type="reset" class="btn btn-secondary ma" id="add" v-on:click="addData">Add</button>
           <button type="button" class="btn btn-secondary ma" id="delete" v-on:click="deleteData">Delete</button>
         </div>
       </div>
+      </form>
     </div>
     <table class="table-bordered ttt">
       <thead>
@@ -26,9 +26,9 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(item, index) in data" :key="index">
-        <td> <input type="checkbox" v-model="selected" :value="index"/></td>
-        <td>{{ item.url }}</td>
+      <tr v-for="(item, index) in data" :key="index" >
+        <td> <input type="checkbox" v-model="selected" :value="item.id"></td>
+        <td >{{ item.url }}</td>
         <td>{{ item.last_tracking_date.substring(0,10) }}</td>
         <td v-if="item.success" class="bg-success">Success</td>
         <td v-else class="bg-warning">No success</td>
@@ -51,16 +51,17 @@ export default {
   },
   computed: {
       selectedAll: {
-        set(value) {
-          this.selected = []
-          if (value) {
-            for(let i = 1; i <= this.data.length; i++) {
-              this.selected.push(i)
-            }
-          }
+        get: function() {
+          return this.data ? this.selected.length === this.data.length : false;
         },
-        get() {
-          return this.selected.length === this.data.length
+        set: function (value) {
+          let selected = [];
+          if (value) {
+            this.data.forEach(function (item) {
+              selected.push(item.id);
+            });
+          }
+          this.selected = selected;
         }
       }
   },
@@ -75,28 +76,34 @@ export default {
       } catch (e) {
         console.log(e)
       }
-      this.loading = false;
     },
     async addData() {
-      let data = {url:['https://auto.ria.com/uk/legkovie/','https://dom.ria.com/uk/prodazha-kvartir/']}
-      const response = await fetch('http://127.0.0.1:3000/dataFetcher/add_url', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+      try {
+        let data = {url: [this.url]}
+        const response = await fetch('http://127.0.0.1:3000/dataFetcher/add_url', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        let result = await response.json();
+        console.log('Успех:', JSON.stringify(result));
+      } catch (e) {
+        console.log(e)
+      }
+      this.fetchData();
+    },
+    async deleteData() {
+      let data = {id: this.selected}
+      console.log(data)
+      const response = await fetch('http://127.0.0.1:3000/dataFetcher/delete_url', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
       let result = await response.json();
       console.log('Успех:', JSON.stringify(result));
-    },
-    async deleteData() {
-
-      const response = await fetch('http://127.0.0.1:3000/dataFetcher/delete_url', {
-        method: 'DELETE',
-        body: JSON.stringify()
-      });
-      let result = await response.json();
-      console.log('Успех:', JSON.stringify(result));
+      this.fetchData();
     },
 
   },
@@ -128,6 +135,7 @@ export default {
 }
 .manag{
   display: inline-block;
+
 }
 
 .control{

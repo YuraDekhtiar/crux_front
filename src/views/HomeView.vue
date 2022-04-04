@@ -1,74 +1,58 @@
 <template>
-  <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" >
-  </head>
-  <div v-if="isElVisible" class="page-main">
-    <div class="main-part_input">
-      <label>Enter a URL to analyze </label>
-    </div>
-    <div class="main-part_input">
-      <label>or</label>
-    </div>
-    <div class="main-part_input">
-      <input type="file" id="file-input">
-      <label for="file-input">upload from file</label>
-    </div>
-
-
-    <div class="input-group m-3">
-
+  <div v-if="isElVisible">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg">
+          <div class="main-part_input">
+            <label>Enter a URL to analyze </label>
+          </div>
+          <div class="main-part_input">
+            <label>or</label>
+          </div>
+          <div class="main-part_input">
+              <input
+                  class="form-control"
+                  accept=".txt" type="file"
+                  id="formFile"
+                  @change="previewFiles"
+              >
+          </div>
+        </div>
+      </div>
+      <div class="input-group m-3">
         <textarea type="text"
                   class="form-control"
                   placeholder="Input URL..."
                   aria-describedby="basic-addon2"
-                  accept=".txt"
-                  v-model="textWithTextarea"/>
-    </div>
-    <div class="container-button">
-
+                  v-model="textWithTextarea"
+                  rows="10"
+        />
+      </div>
       <button @click="postUrls" class="btn btn-outline-secondary" value="false">START</button>
-
     </div>
   </div>
   <div class="page-analysis_main" v-else>
-    <div class="button-to-back">
-    <router-link :to="{name:'home'}">
-      <button @click="isElVisible=!isElVisible" class="btn btn-outline-secondary btn-back-to-home" type="button">Back to home</button>
-    </router-link>
+    <Preloader v-if="isLoading" color="red" scale="0.6" />
+    <div v-else>
+      {{result}}
+
     </div>
-    <div class="table-analysis m-10" >
-      <table class="table table-bordered" >
-        <thead>
-        <tr>
-          <th scope="col">URL</th>
-          <th scope="col">LCP</th>
-          <th scope="col">FID</th>
-          <th scope="col">CLS</th>
-        </tr>
-        </thead>
 
-        <tbody>
-        <tr class="v-table_body" v-for="(item, index) in data" :key="index">
-          <th scope="row" ></th>
-          <td>
-          </td>
-          <td>
 
-          </td>
-          <td>
 
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+
   </div>
 </template>
 
 <script>
+import Preloader from '../components/Preloader'
 
 export default {
+
   name: 'HomeView',
+  components: {
+    Preloader,
+  },
   data() {
     return {
       data: '',
@@ -77,6 +61,8 @@ export default {
       textWithTextarea: '',
       arrayOfUrls: [],
       isElVisible:true ,
+      result: '',
+      isLoading: true,
     }
   },
   methods: {
@@ -86,21 +72,28 @@ export default {
     //     console.log(this.arrayOfUrls)
     // },
     async postUrls() {
-      this.isElVisible = !this.isElVisible;
-      this.arrayOfUrls = this.textWithTextarea.split("\n");
-      console.log(this.arrayOfUrls)
-      let data = {url:this.arrayOfUrls}
-      const response = await fetch('http://127.0.0.1:3000/adminPanel/analyze_url', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      let resultOfAnalysis = await response.json();
-      console.log(resultOfAnalysis);
+      if(this.textWithTextarea.length !== 0) {
+        this.isElVisible = !this.isElVisible;
+        this.arrayOfUrls = this.textWithTextarea.split("\n");
+        let data = {url:this.arrayOfUrls}
+        this.result = await fetch('http://127.0.0.1:3000/adminPanel/analyze_url', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }).then(r => {
+          return r.json();
+        });
+        this.isLoading = false;
+      }
     },
-
+    previewFiles(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = e => this.textWithTextarea = e.target.result;
+      reader.readAsText(file);
+    },
   }
 }
 </script>
@@ -121,20 +114,6 @@ input#file-input + label:hover{
   border-color: #729fe7;
   cursor: pointer;
 }
-textarea {
-  width: 800px; /* Ширина поля в процентах */
-  margin: 0 auto;
-  resize: none; /* Запрещаем изменять размер */
-
-  border: 2px solid #ffffff;
-  border-radius: 10px;
-  font-size: inherit;
-  outline: none;
-  padding: 20px;
-  min-height: 200px;
-
-}
-
 button {
   height: 50px;
   width: 300px;
@@ -143,13 +122,12 @@ button {
 .main-part_input {
   float: left;
   justify-content: space-around;
-  padding: 30px;
+  margin: 10px  30px;
 }
 
 .btn-back-to-home {
   position:fixed;
   left:10px;
-
 }
 
 </style>

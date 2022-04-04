@@ -56,7 +56,7 @@ export default {
       isLoading: true,
     }
   },
-  mounted() {
+  beforeMount() {
     this.fetchData()
   },
   computed: {

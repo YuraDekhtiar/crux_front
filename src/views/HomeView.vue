@@ -38,7 +38,6 @@
   </div>
   <div class="page-analysis_main" v-else>
     <Preloader v-if="isLoading" color="red" scale="0.6" />
-
       <div class="page-analysis_main" v-else>
         <div class="button-to-back">
           <router-link :to="{name:'home'}">
@@ -103,7 +102,7 @@ export default {
       if(this.textWithTextarea.length !== 0) {
         this.isElVisible = !this.isElVisible;
         this.arrayOfUrls = this.textWithTextarea.split("\n");
-        let data = {url:this.arrayOfUrls}
+        let data = {url:this.arrayOfUrls.filter(i => i.length !== 0)}
         this.result = await fetch('http://127.0.0.1:3000/adminPanel/analyze_url', {
           method: 'POST',
           headers: {

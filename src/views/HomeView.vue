@@ -31,9 +31,11 @@
     </div>
   </div>
   <div class="page-analysis_main" v-else>
+    <div class="button-to-back">
     <router-link :to="{name:'home'}">
       <button @click="isElVisible=!isElVisible" class="btn btn-outline-secondary btn-back-to-home" type="button">Back to home</button>
     </router-link>
+    </div>
     <div class="table-analysis m-10" >
       <table class="table table-bordered" >
         <thead>
@@ -49,7 +51,6 @@
         <tr class="v-table_body" v-for="(item, index) in data" :key="index">
           <th scope="row" ></th>
           <td>
-
           </td>
           <td>
 

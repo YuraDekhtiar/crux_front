@@ -1,4 +1,9 @@
 <template>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+
+
   <div v-if="isElVisible">
     <div class="container">
       <div class="row">
@@ -33,13 +38,36 @@
   </div>
   <div class="page-analysis_main" v-else>
     <Preloader v-if="isLoading" color="red" scale="0.6" />
-    <div v-else>
-      {{result}}
 
-    </div>
+      <div class="page-analysis_main" v-else>
+        <div class="button-to-back">
+          <router-link :to="{name:'home'}">
+            <button @click="isElVisible=!isElVisible" class="btn btn-outline-secondary btn-back-to-home" type="button">Back to home</button>
+          </router-link>
+        </div>
 
+        <section class="table-analysis m-10" >
+          <table class="table table-bordered" >
+            <thead>
+            <tr>
+              <th scope="col">URL</th>
+              <th scope="col">LCP</th>
+              <th scope="col">FID</th>
+              <th scope="col">CLS</th>
+            </tr>
+            </thead>
 
-
+            <tbody>
+            <tr class="v-table_body" v-for="(item) of result" :key="item.id">
+              <td>{{item.url}}</td>
+              <td>{{Math.round(item.good*100)}}</td>
+              <td>{{Math.round(item.needs_improvement*100)}}</td>
+              <td>{{Math.round(item.poor*100)}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
 
   </div>
 </template>
@@ -61,7 +89,7 @@ export default {
       textWithTextarea: '',
       arrayOfUrls: [],
       isElVisible:true ,
-      result: '',
+      result: [],
       isLoading: true,
     }
   },

@@ -6,8 +6,8 @@
     <div class="d-flex">
     <nav class="mx-auto p-3" style="width: 500px" >
       <div class="input-group w-100 align-items-center">
-        <input class="form-control mr-2" type="search" placeholder="Search" v-model="search">
-        <button class="btn h-75 mr-2 w-25 btn btn-outline-secondary" type="button" id="search">Search</button>
+        <input class="form-control mr-2" type="search" placeholder="Search" v-model.trim="search">
+        <button class="btn h-75 mr-2 w-25 btn btn-outline-secondary" type="button" id="search" :onclick="searchUrl">Search</button>
       </div>
     </nav>
     <div class="mx-auto p-3" style="width: 500px">
@@ -50,7 +50,8 @@ export default {
   },
   data() {
     return {
-      data: '',
+      responseData: [],
+      data: [],
       search: '',
       selected: [],
       isLoading: true,
@@ -83,8 +84,8 @@ export default {
   methods: {
     async fetchData() {
       try {
-        this.data = '';
-        this.data = await fetch(`http://127.0.0.1:3000/dataFetcher/tracking_url`, {
+        this.responseData = '';
+        this.responseData = await fetch(`http://127.0.0.1:3000/dataFetcher/tracking_url`, {
           method: 'GET',
         })
             .then(res => res.json())
@@ -92,6 +93,7 @@ export default {
       } catch (e) {
         console.log(e)
       }
+      this.data = this.responseData;
     },
     async addData() {
       try {
@@ -122,6 +124,12 @@ export default {
       console.log('Успех:', JSON.stringify(result));
       this.fetchData();
     },
+    searchUrl() {
+      if(this.search.length !== 0)
+        this.data = this.responseData.filter(i =>  i.url.indexOf(this.search) > 0)
+      else
+        this.data = this.responseData;
+    }
 
   },
 }

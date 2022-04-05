@@ -43,7 +43,6 @@
             <button @click="isElVisible=!isElVisible" class="btn btn-outline-secondary btn-back-to-home" type="button">Back to home</button>
           </router-link>
         </div>
-
         <section class="table-analysis m-10" >
           <table class="table table-bordered" >
             <thead>

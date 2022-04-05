@@ -71,7 +71,7 @@ export default {
           backgroundColor: '#2E8B57',
         }, {
           data: this.data.needs_improvement,
-          label: 'NEED INVOROPMENT',
+          label: 'NEEDS INVOROPMENT',
           backgroundColor: '#FFC300',
         }, {
             data: this.data.poor,

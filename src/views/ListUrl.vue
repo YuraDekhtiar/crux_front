@@ -14,7 +14,6 @@
     <div class="input-group w-100 align-items-center" style="height: 50px" >
         <input type="text" class="form-control mr-2" placeholder="Enter url" v-model="url">
         <button type="button" class="h-75 w-25 mr-2 btn btn-info" id="add" v-on:click="addData">Add</button>
-
         <button type="button" class="h-75 w-25 btn btn-danger" id="delete" v-on:click="deleteData">Delete</button>
     </div>
     </div>

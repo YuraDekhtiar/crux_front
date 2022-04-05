@@ -4,6 +4,7 @@
   </head>
   <div v-if="isElVisible">
     <div class="container">
+      <img src="../../public/images/logo.jpeg">
       <div class="row">
         <div class="col-lg">
           <div class="main-part_input">

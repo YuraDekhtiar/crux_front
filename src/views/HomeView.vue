@@ -75,7 +75,6 @@
 import Preloader from '../components/Preloader'
 
 export default {
-
   name: 'HomeView',
   components: {
     Preloader,

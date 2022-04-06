@@ -1,41 +1,42 @@
 <template>
   <div class="content">
+    <div>Кількість URL: {{url.length}}</div>
       <b-tabs content-class="mt-3" align="left">
         <Preloader v-if="isLoading" color="red" scale="0.6" />
-        <b-tab class="main" title="DESKTOP" active  v-else>
-            <div class="cls">
+        <b-tab title="DESKTOP" active  v-else>
+          <div class="chart">
             <img src="../../public/images/cls.svg" class="image" alt="CLS">
             <BarChart :data="dataClsDesktop" :labels="labelsCLS"/>
-            <hr/>
           </div>
-            <div class="fid">
+          <hr/>
+          <div class="chart">
             <img src="../../public/images/fid.svg" class="image" alt="FID">
             <BarChart :data="dataFidDesktop" :labels="labelsFID" />
-            <hr/>
           </div>
-            <div class="lcp">
+          <hr/>
+          <div class="chart">
             <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
             <BarChart :data="dataLcpDesktop" :labels="labelsLCP"/>
-            <hr/>
           </div>
+          <hr/>
         </b-tab>
         <Preloader v-if="isLoading" color="red" scale="0.6" />
-        <b-tab class="main" title="PHONE" v-else>
-          <div class="cls">
+        <b-tab title="PHONE" v-else>
+          <div class="chart">
             <img src="../../public/images/cls.svg" class="image" alt="CLS">
             <BarChart :data="dataClsPhone" :labels="labelsCLS"/>
-            <hr/>
           </div>
-          <div class="fid">
+          <hr/>
+          <div class="chart">
             <img src="../../public/images/fid.svg" class="image" alt="FID">
             <BarChart :data="dataFidPhone" :labels="labelsFID" />
-            <hr/>
           </div>
-          <div class="lcp">
+          <hr/>
+          <div class="chart">
             <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
             <BarChart :data="dataLcpPhone" :labels="labelsLCP"/>
-            <hr/>
           </div>
+          <hr/>
         </b-tab>
       </b-tabs>
   </div>
@@ -100,7 +101,7 @@ export default {
         console.log(e)
       }
 
-      this.groupDPhone(this.responseDataPhone);
+      this.groupPhone(this.responseDataPhone);
     },
     groupDesktop(data) {
       let result = this.filterCLS(data);
@@ -114,7 +115,7 @@ export default {
       this.labelsLCP = result.label;
 
     },
-    groupDPhone(data) {
+    groupPhone(data) {
       let result = this.filterCLS(data);
       this.dataClsPhone = result.data;
       this.labelsCLS = result.label;
@@ -142,6 +143,7 @@ export default {
         poor: { '320': [], '360': [],'400': [], '500': [] }
       }
       const result = this.groupMetricsUrl(data.filter(i => i.metrics_name === 'first_input_delay'), fid);
+      console.log(result)
       return {data:result.arrayMetrics, label:result.label};
     },
     filterLCP(data) {
@@ -162,7 +164,7 @@ export default {
           label.push(curr)
           prev = prev === null ? 0 : prev
           arrayMetrics[status][curr] = (data.filter(i => i.percentiles_75.toFixed(2) >= prev && i.percentiles_75.toFixed(2) <= curr ).length)
-          prev = curr + 0.1;
+          prev = curr + 0.01;
         }
       }
       return {arrayMetrics, label};
@@ -172,8 +174,9 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  width: 800px;
+.chart {
+  min-width: 50%;
+  max-width: 80%;
   margin: 0 auto;
 }
 

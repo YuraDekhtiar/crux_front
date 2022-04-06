@@ -2,7 +2,7 @@
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
-  <div class="about">
+  <div class="listUrl">
     <div class="d-flex">
     <nav class="mx-auto p-3" style="width: 500px" >
       <div class="input-group w-100 align-items-center">
@@ -18,6 +18,7 @@
     </div>
     </div>
     </div>
+    <div style="height: 720px; overflow: auto">
     <Preloader v-if="isLoading"/>
     <table v-else class="table-bordered w-75 mx-auto">
       <thead>
@@ -28,7 +29,7 @@
         <th scope="col">Status</th>
       </tr>
       </thead>
-      <tbody>
+      <tbody style="height: 1500px">
       <tr v-for="(item, index) in data" :key="index" >
         <td> <input type="checkbox" v-model="selected" :value="item.id"></td>
         <td >{{ item.url }}</td>
@@ -38,6 +39,7 @@
       </tr>
       </tbody>
     </table>
+    </div>
   </div>
 </template>
 <script>
@@ -55,12 +57,16 @@ export default {
       search: '',
       selected: [],
       isLoading: true,
+
     }
   },
   beforeMount() {
     this.fetchData()
   },
   computed: {
+    rows() {
+      return this.data.length
+    },
     selectedAll: {
       get: function() {
         return this.data ? this.selected.length === this.data.length : false;
@@ -74,11 +80,6 @@ export default {
         }
         this.selected = selected;
       }
-    },
-    filteredList() {
-      return this.data.filter(one => {
-        return one.url.toLowerCase().includes(this.search.toLowerCase())
-      })
     },
   },
   methods: {
@@ -136,6 +137,10 @@ export default {
 </script>
 
 <style>
+table{
+  position: relative;
+}
+
 #all{
   margin: 5px;
 }

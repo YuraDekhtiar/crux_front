@@ -20,7 +20,7 @@
     </div>
     <div style="height: 720px; overflow: auto" class="w-75 mx-auto">
     <Preloader v-if="isLoading"/>
-    <table v-else class="table-bordered ">
+    <table v-else class="table-bordered w-100">
       <thead>
       <tr>
         <th><input type="checkbox" v-model="selectedAll"><span id="all">All</span></th>

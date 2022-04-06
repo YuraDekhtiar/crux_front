@@ -1,49 +1,68 @@
 <template>
-  <div class="main" v-if="!isLoading">
-    <div class="cls">
-      <img src="../../public/images/cls.svg" class="image" alt="CLS">
-      <BarChart :data="dataCLS" :labels="labelsCLS"/>
-      <hr/>
-    </div>
-    <div class="fid">
-      <img src="../../public/images/fid.svg" class="image" alt="FID">
-      <BarChart :data="dataFID" :labels="labelsFID" />
-      <hr/>
-    </div>
-   <div class="lcp">
-     <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
-     <BarChart :data="dataLCP" :labels="labelsLCP"/>
-     <hr/>
-   </div>
+  <div class="content">
+      <b-tabs content-class="mt-3" align="left">
+        <Preloader v-if="isLoading" color="red" scale="0.6" />
+        <b-tab class="main" title="DESKTOP" active  v-else>
+            <div class="cls">
+            <img src="../../public/images/cls.svg" class="image" alt="CLS">
+            <BarChart :data="dataClsDesktop" :labels="labelsCLS"/>
+            <hr/>
+          </div>
+            <div class="fid">
+            <img src="../../public/images/fid.svg" class="image" alt="FID">
+            <BarChart :data="dataFidDesktop" :labels="labelsFID" />
+            <hr/>
+          </div>
+            <div class="lcp">
+            <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
+            <BarChart :data="dataLcpDesktop" :labels="labelsLCP"/>
+            <hr/>
+          </div>
+        </b-tab>
+        <Preloader v-if="isLoading" color="red" scale="0.6" />
+        <b-tab class="main" title="PHONE" v-else>
+          <div class="cls">
+            <img src="../../public/images/cls.svg" class="image" alt="CLS">
+            <BarChart :data="dataClsPhone" :labels="labelsCLS"/>
+            <hr/>
+          </div>
+          <div class="fid">
+            <img src="../../public/images/fid.svg" class="image" alt="FID">
+            <BarChart :data="dataFidPhone" :labels="labelsFID" />
+            <hr/>
+          </div>
+          <div class="lcp">
+            <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
+            <BarChart :data="dataLcpPhone" :labels="labelsLCP"/>
+            <hr/>
+          </div>
+        </b-tab>
+      </b-tabs>
   </div>
-
-
-
-    <div v-if="false">
-    {{responseData.filter(i => i.metrics_name === 'largest_contentful_paint')}}
-  </div>
-
 </template>
 
 <script>
-
-
+import Preloader from '../components/Preloader'
 import BarChart from "@/components/BarChart";
 //import LineChart from "@/components/LineChart";
 
 export default {
   name: 'ChartsView.vue',
-  components: {BarChart },
+  components: {BarChart, Preloader },
   data() {
     return {
-      responseData: [],
+      responseDataDesktop: [],
+      responseDataPhone: [],
       test: [],
       isLoading: true,
-      dataCLS: {},
+      dataClsDesktop: {},
+      dataClsPhone: {},
       labelsCLS: [],
-      dataFID: [],
+      dataFidDesktop: [],
+      dataFidPhone: [],
       labelsFID: [],
-      dataLCP: [],
+      dataLcpDesktop: [],
+      dataLcpPhone: [],
       labelsLCP: [],
       url: [
           'https://auto.ria.com/news/',
@@ -59,7 +78,7 @@ export default {
           'https://auto.ria.com/uk/all_for_auto/',
           'https://auto.ria.com/uk/legkovie/?page=60',
           'https://auto.ria.com/uk/newauto/'
-      ]
+      ],
     }
   },
   beforeMount() {
@@ -68,50 +87,72 @@ export default {
   methods: {
     async fetchData() {
       try {
-        this.responseData = '';
-        this.responseData = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.url.join('&url=')}&form_factor=phone`, {
+        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.url.join('&url=')}&form_factor=desktop`, {
           method: 'GET',
-        }).then(res => res.json())
+        }).then(res => res.json());
+        this.groupDesktop(this.responseDataDesktop);
+
+        this.responseDataPhone = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.url.join('&url=')}&form_factor=phone`, {
+          method: 'GET',
+        }).then(res => res.json());
         this.isLoading = false;
       } catch (e) {
         console.log(e)
       }
-      this.filterCLS();
-      this.filterFID();
-      this.filterLCP();
+
+      this.groupDPhone(this.responseDataPhone);
     },
-    filterCLS() {
-      this.labelsCLS = [];
+    groupDesktop(data) {
+      let result = this.filterCLS(data);
+      this.dataClsDesktop = result.data;
+      this.labelsCLS = result.label;
+      result = this.filterFID(data);
+      this.dataFidDesktop = result.data;
+      this.labelsFID = result.label;
+      result = this.filterLCP(data);
+      this.dataLcpDesktop = result.data;
+      this.labelsLCP = result.label;
+
+    },
+    groupDPhone(data) {
+      let result = this.filterCLS(data);
+      this.dataClsPhone = result.data;
+      this.labelsCLS = result.label;
+      result = this.filterFID(data);
+      this.dataFidPhone = result.data;
+      this.labelsFID = result.label;
+      result = this.filterLCP(data);
+      this.dataLcpPhone = result.data;
+      this.labelsLCP = result.label;
+
+    },
+    filterCLS(data) {
       const cls = {
         good: { '0.02': [], '0.04': [], '0.06' :[], '0.08': [], '0.1': [] },
         needs_improvement: { '0.12': [], '0.16': [],'0.2': [], '0.25': [] },
         poor: { '0.3': [], '0.4': [], '0.5': [], '0.6': [], '0.7': [], '0.8': [], '0.9': [], '1.0': [] }
       }
-      const result = this.groupMetricsUrl(this.responseData.filter(i => i.metrics_name === 'cumulative_layout_shift'), cls);
-      this.dataCLS = result.arrayMetrics;
-      this.labelsCLS = result.label;
+      const result = this.groupMetricsUrl(data.filter(i => i.metrics_name === 'cumulative_layout_shift'), cls);
+      return {data:result.arrayMetrics, label:result.label};
     },
-    filterFID() {
+    filterFID(data) {
       const fid = {
         good: { '20': [], '40': [], '60' :[], '80': [], '100': [] },
         needs_improvement: { '120': [], '160': [], '200': [], '240': [], '300': [] },
         poor: { '320': [], '360': [],'400': [], '500': [] }
       }
-      const result = this.groupMetricsUrl(this.responseData.filter(i => i.metrics_name === 'first_input_delay'), fid);
-
-      this.dataFID = result.arrayMetrics;
-      this.labelsFID= result.label;
+      const result = this.groupMetricsUrl(data.filter(i => i.metrics_name === 'first_input_delay'), fid);
+      return {data:result.arrayMetrics, label:result.label};
     },
-    filterLCP() {
+    filterLCP(data) {
       const fid = {
         good: { '0.5': [], '1.0': [], '1.5' :[], '2.0': [], '2.5': [] },
         needs_improvement: { '2.7': [], '3.0': [], '3.5': [], '4.0': []},
         poor: { '4.5': [], '5.0': [],'5.5': [], '6.0': [] }
       }
-      const result = this.groupMetricsUrl(this.responseData.filter(i => i.metrics_name === 'largest_contentful_paint'), fid);
+      const result = this.groupMetricsUrl(data.filter(i => i.metrics_name === 'largest_contentful_paint'), fid);
 
-      this.dataLCP = result.arrayMetrics;
-      this.labelsLCP = result.label;
+      return{data:result.arrayMetrics, label:result.label}
     },
     groupMetricsUrl(data, arrayMetrics) {
       let prev = null;

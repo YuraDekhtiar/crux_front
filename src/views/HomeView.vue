@@ -96,10 +96,10 @@ export default {
     //     console.log(this.arrayOfUrls)
     // },
     async postUrls() {
-      if(this.textWithTextarea.length !== 0) {
+      if(this.textWithTextarea.trim().length !== 0) {
         this.isElVisible = !this.isElVisible;
         this.arrayOfUrls = this.textWithTextarea.split("\n");
-        let data = {url:this.arrayOfUrls.filter(i => i.length !== 0)}
+        let data = {url:this.arrayOfUrls.filter(i => i.length !== 0).map(i => i.trim())}
         this.result = await fetch('http://127.0.0.1:3000/adminPanel/analyze_url', {
           method: 'POST',
           headers: {

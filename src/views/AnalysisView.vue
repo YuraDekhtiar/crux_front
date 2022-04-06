@@ -18,12 +18,13 @@
 
   <div class="container text-center  mt-5 mb-5">
     <div class="table-responsive my-5">
-
       <!-- The table component -->
       <TableAnalysis :fields='fields' :urlData ="urlData" :fieldsName="fieldsName"></TableAnalysis>
     </div>
 
   </div>
+  <div v-if="!isLoading"> {{responseDataDesktop}}
+    </div>
 
 
 </template>
@@ -37,6 +38,30 @@ export default {
   name: "AnalysisView",
   components: {
     TableAnalysis
+  },
+  data() {
+    return {
+      responseDataDesktop: [],
+      isLoading: true,
+      url: [
+        'https://auto.ria.com/news/',
+        'https://auto.ria.com/uk/legkovie/?page=1',
+        'https://auto.ria.com/uk/legkovie/?page=2',
+        'https://auto.ria.com/uk/legkovie/?page=3',
+        'https://auto.ria.com/uk/legkovie/?page=4',
+        'https://auto.ria.com/uk/legkovie/?page=5',
+        'https://auto.ria.com/uk/legkovie/?page=10',
+        'https://auto.ria.com/uk/legkovie/?page=12',
+        'https://auto.ria.com/car/used/',
+        'https://auto.ria.com/uk/legkovie/?page=22',
+        'https://auto.ria.com/uk/all_for_auto/',
+        'https://auto.ria.com/uk/legkovie/?page=60',
+        'https://auto.ria.com/uk/newauto/'
+      ],
+    }
+  },
+  beforeMount() {
+    this.fetchData()
   },
   setup() {
     const urlData = [
@@ -74,8 +99,20 @@ export default {
   //     loading: true,
   //   }
   // },
-  methods: {},
+  methods: {
+    async fetchData() {
+      try {
+        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.url.join('&url=')}&form_factor=desktop`, {
+          method: 'GET',
+        }).then(res => res.json());
+        this.groupDesktop(this.responseDataDesktop);
 
+      } catch (e) {
+        console.log(e)
+      }
+      this.isLoading = false;
+    }
+  }
 }
 </script>
 

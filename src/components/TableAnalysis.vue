@@ -22,17 +22,36 @@
           <input type="checkbox">All
         </label>
       </th>
-      <th  v-for="(field, index) in fields" :key='field' @click="sortTable(field)" >
-
-        {{fieldsName[index]}} <i class="bi bi-sort-alpha-down" aria-label='Sort Icon'></i>
+      <th :key='fields[1]' @click="sortTable(fields[0])">
+        {{fieldsName[1]}}
       </th>
+      <th :key='fields[1]'>
+        {{fieldsName[1]}}
+      </th>
+      <th :key='fields[2]'>
+        {{fieldsName[2]}}
+      </th>
+
+      <th :key='fields[3]'>
+        {{fieldsName[3]}}
+      </th>
+      <th :key='fields[4]'>
+        {{fieldsName[4]}}
+      </th>
+
+
+
+      <!--      <th  v-for="(field, index) in fields" :key='field' @click="sortTable(field)" >-->
+
+<!--        {{fieldsName[index]}} <i class="bi bi-sort-alpha-down" aria-label='Sort Icon'></i>-->
+<!--      </th>-->
     </tr>
     </thead>
 
     <tbody>
     <!-- Loop through the list get the each student data -->
     <tr v-for="item in filteredList" :key='item'>
-      <td><input type="checkbox" :value="item.id" ></td>
+      <td><input type="checkbox" :value="item.id"></td>
       <td class="text-left" v-for="field in fields" :key='field'>{{item[field]}}</td>
     </tr>
     </tbody>
@@ -67,7 +86,6 @@ methods:{
 
     // a function to sort the table
     const sortTable = (col) => {
-      console.log('sss')
       sort.value = true
       // Use of _.sortBy() method
       updatedList.value = sortBy(props.urlData,col)

@@ -1,7 +1,7 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/list_url">List URL</router-link> |
+    <router-link to="/list_url">URL List</router-link> |
     <router-link to="/analysis">Analysis</router-link> |
     <router-link to="/charts">Test Chart</router-link>
   </nav>

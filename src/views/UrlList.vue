@@ -32,7 +32,7 @@
       <tbody style="height: 1500px">
       <tr v-for="(item, index) in data" :key="index" >
         <td> <input type="checkbox" v-model="selected" :value="item.id"></td>
-        <td >{{ item.url }}</td>
+        <td class="text-left">{{ item.url }}</td>
         <td>{{ item.last_tracking_date === null? '' : item.last_tracking_date.substring(0,10)}}</td>
         <td v-if="item.success" class="bg-success">Success</td>
         <td v-else class="bg-warning">No success</td>
@@ -46,7 +46,7 @@
 import Preloader from '../components/Preloader'
 
 export default {
-  name: "ListUrlView",
+  name: "UrlListView",
   components: {
     Preloader,
   },

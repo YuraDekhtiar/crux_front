@@ -33,7 +33,7 @@
     <!-- Loop through the list get the each student data -->
     <tr v-for="item in filteredList" :key='item'>
       <td><input type="checkbox" :value="item.id" ></td>
-      <td v-for="field in fields" :key='field'>{{item[field]}}</td>
+      <td class="text-left" v-for="field in fields" :key='field'>{{item[field]}}</td>
     </tr>
     </tbody>
   </table>

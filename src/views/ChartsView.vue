@@ -1,31 +1,39 @@
 <template>
-  <div class="main">
+  <div class="main" v-if="!isLoading">
     <div class="cls">
-      <img src="../../public/images/cls.svg">
-      <BarChart :data="dataCLS" :labels="labelsCLS" v-if="!isLoading"/>
+      <img src="../../public/images/cls.svg" class="image" alt="CLS">
+      <BarChart :data="dataCLS" :labels="labelsCLS"/>
+      <hr/>
     </div>
     <div class="fid">
-    <img src="../../public/images/fid.svg">-->
-     <BarChart :data="dataFID" :labels="labelsFID" v-if="!isLoading"/>
-   </div>
+      <img src="../../public/images/fid.svg" class="image" alt="FID">
+      <BarChart :data="dataFID" :labels="labelsFID" />
+      <hr/>
+    </div>
    <div class="lcp">
-     <img src="../../public/images/lcp.svg">
-     <BarChart :data="dataLCP" :labels="labelsLCP" v-if="!isLoading"/>
+     <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
+     <BarChart :data="dataLCP" :labels="labelsLCP"/>
+     <hr/>
    </div>
   </div>
-  <div v-if="false">
-  {{responseData.filter(i => i.metrics_name === 'largest_contentful_paint')}}
+
+
+
+    <div v-if="false">
+    {{responseData.filter(i => i.metrics_name === 'largest_contentful_paint')}}
   </div>
+
 </template>
 
 <script>
 
 
 import BarChart from "@/components/BarChart";
+//import LineChart from "@/components/LineChart";
 
 export default {
   name: 'ChartsView.vue',
-  components: { BarChart },
+  components: {BarChart },
   data() {
     return {
       responseData: [],
@@ -126,6 +134,14 @@ export default {
 .main {
   width: 800px;
   margin: 0 auto;
+}
+
+.image {
+  height: 100px;
+  width: 100%;
+
+
+
 }
 
 </style>

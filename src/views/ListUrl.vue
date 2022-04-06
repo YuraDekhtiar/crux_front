@@ -18,9 +18,9 @@
     </div>
     </div>
     </div>
-    <div style="height: 720px; overflow: auto">
+    <div style="height: 720px; overflow: auto" class="w-75 mx-auto">
     <Preloader v-if="isLoading"/>
-    <table v-else class="table-bordered w-75 mx-auto">
+    <table v-else class="table-bordered ">
       <thead>
       <tr>
         <th><input type="checkbox" v-model="selectedAll"><span id="all">All</span></th>

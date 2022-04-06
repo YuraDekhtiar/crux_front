@@ -20,7 +20,6 @@
   text-align: center;
   color: #2c3e50;
   min-width: 800px;
-  padding-bottom: 50px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;

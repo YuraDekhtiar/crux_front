@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <div>Кількість URL: {{url.length}}</div>
       <b-tabs content-class="mt-3" align="left">
         <Preloader v-if="isLoading" color="red" scale="0.6" />
         <b-tab title="DESKTOP" active  v-else>
@@ -100,7 +101,7 @@ export default {
         console.log(e)
       }
 
-      this.groupDPhone(this.responseDataPhone);
+      this.groupPhone(this.responseDataPhone);
     },
     groupDesktop(data) {
       let result = this.filterCLS(data);
@@ -114,7 +115,7 @@ export default {
       this.labelsLCP = result.label;
 
     },
-    groupDPhone(data) {
+    groupPhone(data) {
       let result = this.filterCLS(data);
       this.dataClsPhone = result.data;
       this.labelsCLS = result.label;
@@ -142,6 +143,7 @@ export default {
         poor: { '320': [], '360': [],'400': [], '500': [] }
       }
       const result = this.groupMetricsUrl(data.filter(i => i.metrics_name === 'first_input_delay'), fid);
+      console.log(result)
       return {data:result.arrayMetrics, label:result.label};
     },
     filterLCP(data) {
@@ -162,7 +164,7 @@ export default {
           label.push(curr)
           prev = prev === null ? 0 : prev
           arrayMetrics[status][curr] = (data.filter(i => i.percentiles_75.toFixed(2) >= prev && i.percentiles_75.toFixed(2) <= curr ).length)
-          prev = curr + 0.1;
+          prev = curr + 0.01;
         }
       }
       return {arrayMetrics, label};

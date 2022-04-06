@@ -2,40 +2,40 @@
   <div class="content">
       <b-tabs content-class="mt-3" align="left">
         <Preloader v-if="isLoading" color="red" scale="0.6" />
-        <b-tab class="main" title="DESKTOP" active  v-else>
-            <div class="cls">
+        <b-tab title="DESKTOP" active  v-else>
+          <div class="chart">
             <img src="../../public/images/cls.svg" class="image" alt="CLS">
             <BarChart :data="dataClsDesktop" :labels="labelsCLS"/>
-            <hr/>
           </div>
-            <div class="fid">
+          <hr/>
+          <div class="chart">
             <img src="../../public/images/fid.svg" class="image" alt="FID">
             <BarChart :data="dataFidDesktop" :labels="labelsFID" />
-            <hr/>
           </div>
-            <div class="lcp">
+          <hr/>
+          <div class="chart">
             <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
             <BarChart :data="dataLcpDesktop" :labels="labelsLCP"/>
-            <hr/>
           </div>
+          <hr/>
         </b-tab>
         <Preloader v-if="isLoading" color="red" scale="0.6" />
-        <b-tab class="main" title="PHONE" v-else>
-          <div class="cls">
+        <b-tab title="PHONE" v-else>
+          <div class="chart">
             <img src="../../public/images/cls.svg" class="image" alt="CLS">
             <BarChart :data="dataClsPhone" :labels="labelsCLS"/>
-            <hr/>
           </div>
-          <div class="fid">
+          <hr/>
+          <div class="chart">
             <img src="../../public/images/fid.svg" class="image" alt="FID">
             <BarChart :data="dataFidPhone" :labels="labelsFID" />
-            <hr/>
           </div>
-          <div class="lcp">
+          <hr/>
+          <div class="chart">
             <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
             <BarChart :data="dataLcpPhone" :labels="labelsLCP"/>
-            <hr/>
           </div>
+          <hr/>
         </b-tab>
       </b-tabs>
   </div>
@@ -172,8 +172,9 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  width: 800px;
+.chart {
+  min-width: 50%;
+  max-width: 80%;
   margin: 0 auto;
 }
 

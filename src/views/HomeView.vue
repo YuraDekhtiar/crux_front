@@ -40,7 +40,7 @@
       <div class="page-analysis_main" v-else>
         <div class="button-to-back">
           <router-link :to="{name:'home'}">
-            <button @click="isElVisible=!isElVisible" class="btn btn-outline-secondary btn-back-to-home" type="button">Back to home</button>
+            <button @click="isElVisible=!isElVisible" class="back-to-home m-3" type="button">Back to home</button>
           </router-link>
         </div>
         <section class="table-analysis m-10" >

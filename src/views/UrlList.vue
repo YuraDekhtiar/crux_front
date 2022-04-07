@@ -23,19 +23,23 @@
     <table v-else class="table-bordered w-100">
       <thead>
       <tr>
-        <th><input type="checkbox" v-model="selectedAll"><span id="all">All</span></th>
+        <th scope="col"><input type="checkbox" v-model="selectedAll"><span>All</span></th>
         <th scope="col">URL</th>
         <th scope="col">Date of last tracking</th>
-        <th scope="col">Status</th>
+        <th scope="col" class="p-2">Status</th>
       </tr>
       </thead>
       <tbody style="height: 1500px">
       <tr v-for="(item, index) in data" :key="index" >
         <td> <input type="checkbox" v-model="selected" :value="item.id"></td>
-        <td class="text-left">{{ item.url }}</td>
+        <td class="text-left p-2">{{ item.url }}</td>
         <td>{{ item.last_tracking_date === null? '' : item.last_tracking_date.substring(0,10)}}</td>
-        <td v-if="item.success" class="bg-success">Success</td>
-        <td v-else class="bg-warning">No success</td>
+        <td v-if="item.success"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" color="green" class="bi bi-check2 fs-2" viewBox="0 0 16 16">
+          <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+        </svg></td>
+        <td v-else ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" color="red" class="bi bi-x fs-2" viewBox="0 0 16 16">
+          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg></td>
       </tr>
       </tbody>
     </table>
@@ -137,11 +141,5 @@ export default {
 </script>
 
 <style>
-table{
-  position: relative;
-}
 
-#all{
-  margin: 5px;
-}
 </style>

@@ -24,13 +24,26 @@ const routes = [
     component: () => import(/* webpackChunkName: "analysis" */ '../views/AnalysisView.vue'),
   },
   {
-    path: '/charts',
+    path: '/charts/:type',
     name: 'charts',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "analysis" */ '../views/ChartsView.vue'),
-  }
+  },
+  {
+    path: '/dynamic/',
+    name: 'dynamicChart',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "analysis" */ '../views/ChartsLineView'),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'page404',
+    component: () => import('../views/404View'),
+  },
 ]
 
 const router = createRouter({

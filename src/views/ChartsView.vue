@@ -1,60 +1,65 @@
 <template>
-  <div class="content">
-    <div>Кількість URL: {{url.length}}</div>
-      <b-tabs content-class="mt-3" align="left">
-        <Preloader v-if="isLoading" color="red" scale="0.6" />
-        <b-tab title="DESKTOP" active  v-else>
-          <div class="chart">
-            <img src="../../public/images/cls.svg" class="image" alt="CLS">
-            <BarChart :data="dataClsDesktop" :labels="labelsCLS"/>
-          </div>
-          <hr/>
-          <div class="chart">
-            <img src="../../public/images/fid.svg" class="image" alt="FID">
-            <BarChart :data="dataFidDesktop" :labels="labelsFID" />
-          </div>
-          <hr/>
-          <div class="chart">
-            <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
-            <BarChart :data="dataLcpDesktop" :labels="labelsLCP"/>
-          </div>
-          <hr/>
-        </b-tab>
-        <Preloader v-if="isLoading" color="red" scale="0.6" />
-        <b-tab title="PHONE" v-else>
-          <div class="chart">
-            <img src="../../public/images/cls.svg" class="image" alt="CLS">
-            <BarChart :data="dataClsPhone" :labels="labelsCLS"/>
-          </div>
-          <hr/>
-          <div class="chart">
-            <img src="../../public/images/fid.svg" class="image" alt="FID">
-            <BarChart :data="dataFidPhone" :labels="labelsFID" />
-          </div>
-          <hr/>
-          <div class="chart">
-            <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
-            <BarChart :data="dataLcpPhone" :labels="labelsLCP"/>
-          </div>
-          <hr/>
-        </b-tab>
-      </b-tabs>
+  <Preloader v-if="isLoading" color="red" scale="0.6" />
+  <div v-else class="content">
+    <div>
+      Кількість URL: {{this.getAllUrls.length}}
+    </div>
+    <b-tabs content-class="mt-3" align="left">
+      <Preloader v-if="isLoading" color="red" scale="0.6" />
+      <b-tab title="DESKTOP" active  v-else>
+        <div class="chart">
+          <img src="../../public/images/cls.svg" class="image" alt="CLS">
+          <BarChart :data="dataClsDesktop" :labels="labelsCLS"/>
+          <div></div>
+        </div>
+        <hr/>
+        <div class="chart">
+          <img src="../../public/images/fid.svg" class="image" alt="FID">
+          <BarChart :data="dataFidDesktop" :labels="labelsFID" />
+        </div>
+        <hr/>
+        <div class="chart">
+          <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
+          <BarChart :data="dataLcpDesktop" :labels="labelsLCP"/>
+        </div>
+        <hr/>
+      </b-tab>
+      <Preloader v-if="isLoading" color="red" scale="0.6" />
+      <b-tab title="PHONE" v-else>
+        <div class="chart">
+          <img src="../../public/images/cls.svg" class="image" alt="CLS">
+          <BarChart :data="dataClsPhone" :labels="labelsCLS"/>
+        </div>
+        <hr/>
+        <div class="chart">
+          <img src="../../public/images/fid.svg" class="image" alt="FID">
+          <BarChart :data="dataFidPhone" :labels="labelsFID" />
+        </div>
+        <hr/>
+        <div class="chart">
+          <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
+          <BarChart :data="dataLcpPhone" :labels="labelsLCP"/>
+        </div>
+        <hr/>
+      </b-tab>
+    </b-tabs>
   </div>
 </template>
 
 <script>
 import Preloader from '../components/Preloader'
 import BarChart from "@/components/BarChart";
-//import LineChart from "@/components/LineChart";
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'ChartsView.vue',
-  components: {BarChart, Preloader },
+  components: {
+    BarChart,
+    Preloader },
   data() {
     return {
       responseDataDesktop: [],
       responseDataPhone: [],
-      test: [],
       isLoading: true,
       dataClsDesktop: {},
       dataClsPhone: {},
@@ -65,42 +70,36 @@ export default {
       dataLcpDesktop: [],
       dataLcpPhone: [],
       labelsLCP: [],
-      url: [
-          'https://auto.ria.com/news/',
-          'https://auto.ria.com/uk/legkovie/?page=1',
-          'https://auto.ria.com/uk/legkovie/?page=2',
-          'https://auto.ria.com/uk/legkovie/?page=3',
-          'https://auto.ria.com/uk/legkovie/?page=4',
-          'https://auto.ria.com/uk/legkovie/?page=5',
-          'https://auto.ria.com/uk/legkovie/?page=10',
-          'https://auto.ria.com/uk/legkovie/?page=12',
-          'https://auto.ria.com/car/used/',
-          'https://auto.ria.com/uk/legkovie/?page=22',
-          'https://auto.ria.com/uk/all_for_auto/',
-          'https://auto.ria.com/uk/legkovie/?page=60',
-          'https://auto.ria.com/uk/newauto/'
-      ],
     }
   },
-  beforeMount() {
-    this.fetchData();
+  computed: mapGetters(['getAllUrls', 'getDataCharts']),
+  async mounted() {
+    if(this.$route.params.type === 'analyze') {
+      await this.groupDesktop(this.getDataCharts.filter(i => i.form_factor === 'desktop'));
+      await this.groupPhone(this.getDataCharts.filter(i => i.form_factor === 'phone'));
+    } else if(this.$route.params.type === 'history') {
+      await this.$store.dispatch('fetchAllUrlHistory');
+      await this.fetchDataHistory();
+    } else {
+      await this.$router.push({name: 'page404'});
+    }
+    this.isLoading = false;
   },
   methods: {
-    async fetchData() {
+    async fetchDataHistory() {
+      const url = this.getAllUrls;
       try {
-        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.url.join('&url=')}&form_factor=desktop`, {
+        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${url.join('&url=')}&form_factor=desktop`, {
           method: 'GET',
         }).then(res => res.json());
         this.groupDesktop(this.responseDataDesktop);
 
-        this.responseDataPhone = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.url.join('&url=')}&form_factor=phone`, {
+        this.responseDataPhone = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${url.join('&url=')}&form_factor=phone`, {
           method: 'GET',
         }).then(res => res.json());
-        this.isLoading = false;
       } catch (e) {
         console.log(e)
       }
-
       this.groupPhone(this.responseDataPhone);
     },
     groupDesktop(data) {
@@ -140,31 +139,28 @@ export default {
       const fid = {
         good: { '20': [], '40': [], '60' :[], '80': [], '100': [] },
         needs_improvement: { '120': [], '160': [], '200': [], '240': [], '300': [] },
-        poor: { '320': [], '360': [],'400': [], '500': [] }
+        poor: { '320': [], '360': [],'400': [], '600': [], '800': [] }
       }
       const result = this.groupMetricsUrl(data.filter(i => i.metrics_name === 'first_input_delay'), fid);
-      console.log(result)
       return {data:result.arrayMetrics, label:result.label};
     },
     filterLCP(data) {
       const fid = {
-        good: { '0.5': [], '1.0': [], '1.5' :[], '2.0': [], '2.5': [] },
-        needs_improvement: { '2.7': [], '3.0': [], '3.5': [], '4.0': []},
-        poor: { '4.5': [], '5.0': [],'5.5': [], '6.0': [] }
+        good: { '500': [], '1000': [], '1500' :[], '2000': [], '2500': [] },
+        needs_improvement: { '2700': [], '3000': [], '3500': [], '4000': []},
+        poor: { '4500': [], '5000': [],'5500': [], '6000': [] }
       }
       const result = this.groupMetricsUrl(data.filter(i => i.metrics_name === 'largest_contentful_paint'), fid);
-
       return{data:result.arrayMetrics, label:result.label}
     },
     groupMetricsUrl(data, arrayMetrics) {
-      let prev = null;
+      let prev = 0.00;
       const label = [];
       for(const status in arrayMetrics) {
         for(const curr in arrayMetrics[status]) {
           label.push(curr)
-          prev = prev === null ? 0 : prev
-          arrayMetrics[status][curr] = (data.filter(i => i.percentiles_75.toFixed(2) >= prev && i.percentiles_75.toFixed(2) <= curr ).length)
-          prev = curr + 0.01;
+          arrayMetrics[status][curr] = (data.filter(i => i.percentiles_75 >= prev && i.percentiles_75 <= curr ).length)
+          prev = parseFloat(curr) + 0.0001;
         }
       }
       return {arrayMetrics, label};
@@ -182,10 +178,6 @@ export default {
 
 .image {
   height: 100px;
-  width: 100%;
-
-
-
 }
 
 </style>

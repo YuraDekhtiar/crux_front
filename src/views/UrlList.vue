@@ -115,7 +115,7 @@ export default {
         console.log(e)
       }
       this.url= '';
-      this.fetchData();
+      await this.fetchData();
     },
     async deleteData() {
       let data = {id: this.selected}
@@ -127,7 +127,7 @@ export default {
       });
       let result = await response.json();
       console.log('Успех:', JSON.stringify(result));
-      this.fetchData();
+      await this.fetchData();
     },
     searchUrl() {
       if(this.search.length !== 0)

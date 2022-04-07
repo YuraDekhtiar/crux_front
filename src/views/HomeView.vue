@@ -18,7 +18,7 @@
                   class="form-control"
                   accept=".txt" type="file"
                   id="formFile"
-                  @change="previewFiles"
+                  @change="loadingUrlFromFile"
               >
           </div>
         </div>
@@ -32,41 +32,43 @@
                   rows="10"
         />
       </div>
-      <button @click="postUrls" class="btn btn-outline-secondary" value="false">START</button>
+      <button @click="analyzeUrls" class="btn btn-outline-secondary" value="false">ANALYZE</button>
+
+
     </div>
   </div>
-  <div class="page-analysis_main" v-else>
-    <Preloader v-if="isLoading" color="red" scale="0.6" />
-      <div class="page-analysis_main" v-else>
-        <div class="button-to-back">
-          <router-link :to="{name:'home'}">
-            <button @click="isElVisible=!isElVisible" class="back-to-home m-3" type="button">Back to home</button>
-          </router-link>
-        </div>
-        <section class="table-analysis m-10" >
-          <table class="table table-bordered" >
-            <thead>
-            <tr>
-              <th scope="col">URL</th>
-              <th scope="col">LCP</th>
-              <th scope="col">FID</th>
-              <th scope="col">CLS</th>
-            </tr>
-            </thead>
+<!--  <div class="page-analysis_main" v-else>-->
+<!--    <Preloader v-if="isLoading" color="red" scale="0.6" />-->
+<!--      <div class="page-analysis_main" v-else>-->
+<!--        <div class="button-to-back">-->
+<!--          <router-link :to="{name:'home'}">-->
+<!--            <button @click="isElVisible=!isElVisible" class="back-to-home m-3" type="button">Back to home</button>-->
+<!--          </router-link>-->
+<!--        </div>-->
+<!--        <section class="table-analysis m-10" >-->
+<!--          <table class="table table-bordered" >-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--              <th scope="col">URL</th>-->
+<!--              <th scope="col">LCP</th>-->
+<!--              <th scope="col">FID</th>-->
+<!--              <th scope="col">CLS</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
 
-            <tbody>
-            <tr class="v-table_body" v-for="(item) of result" :key="item.id">
-              <td>{{item.url}}</td>
-              <td>{{Math.round(item.good*100)}}</td>
-              <td>{{Math.round(item.needs_improvement*100)}}</td>
-              <td>{{Math.round(item.poor*100)}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </section>
-      </div>
+<!--            <tbody>-->
+<!--            <tr class="v-table_body" v-for="(item) of result" :key="item.id">-->
+<!--              <td>{{item.url}}</td>-->
+<!--              <td>{{Math.round(item.good*100)}}</td>-->
+<!--              <td>{{Math.round(item.needs_improvement*100)}}</td>-->
+<!--              <td>{{Math.round(item.poor*100)}}</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--        </section>-->
+<!--      </div>-->
 
-  </div>
+<!--  </div>-->
 </template>
 
 <script>
@@ -74,7 +76,9 @@ import Preloader from '../components/Preloader'
 
 export default {
   name: 'HomeView',
+
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     Preloader,
   },
   data() {
@@ -89,30 +93,17 @@ export default {
       isLoading: true,
     }
   },
-  methods: {
-    //for button example
-    // getTextarea () {
-    //     this.arrayOfUrls = this.textWithTextarea.split("\n");
-    //     console.log(this.arrayOfUrls)
-    // },
-    async postUrls() {
+    methods: {
+      async analyzeUrls() {
       if(this.textWithTextarea.trim().length !== 0) {
-        this.isElVisible = !this.isElVisible;
         this.arrayOfUrls = this.textWithTextarea.split("\n");
         let data = {url:this.arrayOfUrls.filter(i => i.length !== 0).map(i => i.trim())}
-        this.result = await fetch('http://127.0.0.1:3000/adminPanel/analyze_url', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        }).then(r => {
-          return r.json();
-        });
+        await this.$store.dispatch('analyzeUrl', data);
+        await this.$router.push({path: '/charts/analyze'});
         this.isLoading = false;
       }
     },
-    previewFiles(event) {
+    loadingUrlFromFile(event) {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = e => this.textWithTextarea = e.target.result;

@@ -140,9 +140,4 @@ button {
   margin: 10px  30px;
 }
 
-.btn-back-to-home {
-  position:fixed;
-  left:10px;
-}
-
 </style>

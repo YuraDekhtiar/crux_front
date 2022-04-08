@@ -21,11 +21,9 @@
   text-align: center;
   color: #2c3e50;
   min-width: 800px;
-  margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 10px;
-  margin-top: 50px;
+  margin: 0 auto 0;
+  padding: 60px 20px 10px 20px;
+
 }
 
 nav {

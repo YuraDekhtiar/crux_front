@@ -16,14 +16,13 @@
 <!--    </label>-->
 <!--  </div>-->
 
+
   <div class="container text-center  mt-5 mb-5">
     <div class="table-responsive my-5">
       <!-- The table component -->
       <TableAnalysis :fields='fields' :urlData ="[...responseDataPhone, ...responseDataDesktop]" :fieldsName="fieldsName"></TableAnalysis>
     </div>
 
-  </div>
-  <div v-if="!isLoading">
   </div>
 
 
@@ -34,7 +33,7 @@
 import TableAnalysis from '../components/TableAnalysis.vue'
 
 export default {
-  name: "AnalysisView",
+  name: "HistoryView",
   components: {
     TableAnalysis
   },
@@ -45,6 +44,7 @@ export default {
       responseDataDesktop: [],
       responseDataPhone: [],
       getUrlsFromTable: [],
+      urlForAnalyse: [],
       isLoading: true,
       urls: [
         'https://auto.ria.com/news/',
@@ -135,6 +135,9 @@ export default {
           method: 'GET',
         })
             .then(res => res.json())
+        for(let i = 0; i < this.getUrlsFromTable; i++) {
+          this.urlForAnalyse = this.getUrlsFromTable[i].url;
+        }
         this.isLoading = false;
       } catch (e) {
         console.log(e)

@@ -2,8 +2,8 @@
 
   <div class="searchBar">
     <!-- Filter Search -->
-    <div class="input-group mb-5">
-      <input type="search" class="form-control" v-model='searchQuery' placeholder="Enter text for search..." aria-label="Recipient's username" aria-describedby="button-addon2">
+    <div class="input-group mb-5" style="width: 400px">
+      <input type="search" class="form-control" v-model='searchQuery' placeholder="Enter text for search..." aria-label="Recipient's username" aria-describedby="button-addon2" >
     </div>
   </div>
 

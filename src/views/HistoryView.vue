@@ -3,25 +3,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" >
   </head>
 
-<!--  <div class="ml-4">-->
-<!--    <input class="form-check-input" type="checkbox" v-bind:value="true" v-model="formFactor.desktop" id="desktop">-->
-<!--    <label class="form-check-label" for="desktop">-->
-<!--      Desktop-->
-<!--    </label>-->
-<!--  </div>-->
-<!--  <div class="ml-4">-->
-<!--    <input class="form-check-input" type="checkbox" v-bind:value="true" v-model="formFactor.phone" id="phone">-->
-<!--    <label class="form-check-label" for="phone">-->
-<!--      Phone-->
-<!--    </label>-->
-<!--  </div>-->
-
-
   <div class="container text-center  mt-5 mb-5">
-    {{responseData}}
     <div class="table-responsive my-5">
       <!-- The table component -->
-      <TableAnalysis :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableAnalysis>
+      <TableHistory :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableHistory>
     </div>
 
   </div>
@@ -31,48 +16,35 @@
 
 <script>
 // Importing the table component
-import TableAnalysis from '../components/TableAnalysis.vue'
+import TableHistory from '../components/TableHistory.vue'
 
 export default {
   name: "HistoryView",
   components: {
-    TableAnalysis
+    TableHistory
   },
   data() {
     return {
       responseData: [],
       isLoading: true,
-      urlsId: [1],
-      urls: ['https://auto.ria.com/uk/'],
+      urlsId: [],
+      urls: [],
     }
   },
   async beforeMount() {
-    //await this.getUrls();
+    await this.getUrls();
     await this.fetchData()
 
-    this.sort();
+    //this.sort();
   },
 
   setup() {
-    // const urlData = [
-    //
-    //   {url:"https://auto.ria.com/uk/legkovie/?page=6", form_factor:"phone", lcp:"45", fid: "64", cls: "24"},
-    //   {url:"https://makeup.com.ua/ua/categorys/20272/", form_factor:"desktop", lcp:"43", fid: "54", cls: "64"},
-    //   {url:"https://auto.ria.com/uk/legkovie/?page=9", form_factor:"desktop", lcp:"53", fid: "24", cls: "23"},
-    //   {url:"https://makeup.com.ua/ua/categorys/467/", form_factor:"desktop", lcp:"64", fid: "86", cls: "87"},
-    //   {url:"https://auto.ria.com/uk/", form_factor:"phone", lcp:"24", fid: "37", cls: "20"},
-    //   {url:"https://dom.ria.com/uk/prodazha-nedvizhimosti/", form_factor:"phone", lcp:"85", fid: "29", cls: "35"},
-    //   {url:"https://dom.ria.com/uk/arenda-nedvizhimosti/", form_factor:"desktop", lcp:"54", fid: "57", cls: "56"},
-    //   {url:"https://auto.ria.com/uk/legkovie/?page=4", form_factor:"phone", lcp:"43", fid: "64", cls: "22"},
-    //
-    // ]
-
     const fields = [
       'url','form_factor','good','needs_improvement','poor'
     ]
 
     const fieldsName = [
-      'URL','Form Factor','LCP','FID','CLS'
+      'URL','Device','LCP','FID','CLS'
     ]
 
     return{ fields, fieldsName}
@@ -80,12 +52,10 @@ export default {
 
   methods: {
     async fetchData() {
-      console.log("start fetch")
       try {
         this.responseData = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url_id=${this.urlsId.join('&url_id=')}`, {
           method: 'GET',
         }).then(res => res.json());
-       // this.groupDesktop(this.responseDataDesktop);
       } catch (e) {
         console.log(e)
       }
@@ -96,7 +66,7 @@ export default {
         this.urls = await fetch(`http://127.0.0.1:3000/adminPanel/url_history`, {
           method: 'GET',
         })
-        .then(res => res.json());
+            .then(res => res.json());
         this.urlsId = this.urls.map(u => u.id);
       } catch (e) {
         console.log(e)
@@ -105,13 +75,13 @@ export default {
 
       this.isLoading = false;
     },
-    sort(){
-      this.urls.map(u => {
-        return {
-          url: u
-        }
-      });
-    }
+    // sort(){
+    //   this.urls.map(u => {
+    //     return {
+    //       url: u
+    //     }
+    //   });
+    // }
   }
 
 }

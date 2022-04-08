@@ -1,9 +1,19 @@
 <template>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
 
-  <div class="searchBar">
-    <!-- Filter Search -->
-    <div class="input-group mb-5" style="width: 400px">
-      <input type="search" class="form-control" v-model='searchQuery' placeholder="Enter text for search..." aria-label="Recipient's username" aria-describedby="button-addon2" >
+  <div class="d-flex">
+    <div class="mx-auto p-3" style="width: 900px">
+      <div class="input-group w-100 ">
+        <div style="width: 25%; height: 50px; float: left">
+          <input type="text" class="form-control mr-2" style="float: left" placeholder="Enter text for search..." v-model="searchQuery">
+        </div>
+        <div style="width: 75%; height:  50px; float: right">
+          <button type="button" class="h-75 w-25 mr-3 btn btn-info" id="add" v-on:click="viewGraphs">View graphs</button>
+          <button type="button" class="h-75 w-30 btn btn-danger" id="delete" v-on:click="dynamicsOfChange">Dynamics of change</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -12,7 +22,7 @@
     <tr>
       <!-- loop through each value of the fields to get the table header -->
       <th>
-          <input type="checkbox"  v-on:click="checkAll()" v-model="checkedAll">All
+          <input type="checkbox" v-on:click="checkAll()" v-model="checkedAll">All
       </th>
       <th :key='fields[0]' @click="sortTable(fields[0])">
         {{fieldsName[0]}}

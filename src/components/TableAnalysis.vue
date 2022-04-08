@@ -12,7 +12,7 @@
     <tr>
       <!-- loop through each value of the fields to get the table header -->
       <th>
-          <input type="checkbox" @click="select" v-model="select_all">All
+          <input type="checkbox"  v-on:click="checkAll()" v-model="checkedAll">All
       </th>
       <th :key='fields[0]' @click="sortTable(fields[0])">
         {{fieldsName[0]}}
@@ -40,8 +40,20 @@
     <tbody>
     <!-- Loop through the list get the each student data -->
     <tr v-for="item in filteredList" :key='item'>
-      <td><input type="checkbox"  :value="item.id" v-model="selected"></td>
-      <td class="text-left" v-for="field in fields" :key='field'>{{item[field]}}</td>
+      <td><input type="checkbox" v-bind:value='item.url_id' v-model="checked" v-on:change="checkUpdate()" ></td>
+      <td class="text-left p-2">{{ item.url }}</td>
+
+      <td v-if="item.form_factor=='phone'"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16">
+        <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/>
+        <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+      </svg></td>
+      <td v-else ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-laptop" viewBox="0 0 16 16">
+        <path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5h11zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2h-11zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5z"/>
+      </svg></td>
+      <td class="text-left p-2">{{ Math.round(item.good*100)+'%'}}</td>
+      <td class="text-left p-2">{{ Math.round(item.needs_improvement*100)+'%' }}</td>
+      <td class="text-left p-2">{{ Math.round(item.poor*100)+'%' }}</td>
+<!--      <td class="text-left" v-for="field in fields" :key='field'>{{item[field]}}</td>-->
     </tr>
     </tbody>
   </table>
@@ -70,14 +82,26 @@ export default {
   },
   data() {
     return{
-      select_all: false,
-      selected: []
+      checked: [],
+      checkedAll: false,
     }
   },
 
-  methods:{
-    select (){
-
+  methods: {
+    checkAll: function() {
+      if (!this.checkedAll) {
+        for (let i in this.filteredList) {
+          this.checked.push(this.filteredList[i].url_id);
+        }
+        console.log(this.checked);
+      }
+    },
+    checkUpdate: function() {
+      if (this.checked.length === this.filteredList.length) {
+        this.checkedAll = true;
+      } else {
+        this.checkedAll = false;
+      }
     }
   },
 
@@ -111,6 +135,7 @@ export default {
         );
       });
     });
+
 
 
     return {sortedList, sortTable,searchQuery,filteredList}

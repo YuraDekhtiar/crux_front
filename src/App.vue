@@ -25,10 +25,16 @@
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 10px;
+  margin-top: 50px;
 }
 
 nav {
-  padding: 30px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  padding: 20px;
+  background: #ffffff;
 }
 
 nav a {

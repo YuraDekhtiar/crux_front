@@ -44,6 +44,7 @@ export default {
       dataAboutUrl:[],
       responseDataDesktop: [],
       responseDataPhone: [],
+      getUrlsFromTable: [],
       isLoading: true,
       urls: [
         'https://auto.ria.com/news/',
@@ -106,7 +107,7 @@ export default {
   methods: {
     async fetchDataDesktop() {
       try {
-        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.url.join('&url=')}&form_factor=desktop`, {
+        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.urls.join('&url=')}&form_factor=desktop`, {
           method: 'GET',
         }).then(res => res.json());
         this.groupDesktop(this.responseDataDesktop);
@@ -130,8 +131,7 @@ export default {
     },
     async getUrls() {
       try {
-        this.urls = '';
-        this.urls = await fetch(`http://127.0.0.1:3000/adminPanel/url_history`, {
+        this.getUrlsFromTable = await fetch(`http://127.0.0.1:3000/adminPanel/url_history`, {
           method: 'GET',
         })
             .then(res => res.json())

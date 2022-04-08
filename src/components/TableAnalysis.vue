@@ -12,7 +12,7 @@
     <tr>
       <!-- loop through each value of the fields to get the table header -->
       <th>
-          <input type="checkbox" @click="select" v-model="select_all">All
+          <input type="checkbox"  v-on:click="checkAll()" v-model="checkedAll">All
       </th>
       <th :key='fields[0]' @click="sortTable(fields[0])">
         {{fieldsName[0]}}
@@ -40,7 +40,7 @@
     <tbody>
     <!-- Loop through the list get the each student data -->
     <tr v-for="item in filteredList" :key='item'>
-      <td><input type="checkbox"  :value="item.id" v-model="selected"></td>
+      <td><input type="checkbox" v-bind:value='item.url_id' v-model="checked" v-on:change="checkUpdate()" ></td>
       <td class="text-left" v-for="field in fields" :key='field'>{{item[field]}}</td>
     </tr>
     </tbody>
@@ -67,14 +67,26 @@ export default {
   },
   data() {
     return{
-      select_all: false,
-      selected: []
+      checked: [],
+      checkedAll: false,
     }
   },
 
-  methods:{
-    select (){
-
+  methods: {
+    checkAll: function() {
+      if (!this.checkedAll) {
+        for (let i in this.filteredList) {
+          this.checked.push(this.filteredList[i].url_id);
+        }
+        console.log(this.checked);
+      }
+    },
+    checkUpdate: function() {
+      if (this.checked.length === this.filteredList.length) {
+        this.checkedAll = true;
+      } else {
+        this.checkedAll = false;
+      }
     }
   },
 
@@ -108,6 +120,7 @@ export default {
         );
       });
     });
+
 
 
     return {sortedList, sortTable,searchQuery,filteredList}

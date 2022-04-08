@@ -57,9 +57,6 @@ export default {
     data: {
       type: Object
     },
-    labels: {
-      type: Array
-    }
   },
   data() {
     return {

@@ -73,6 +73,9 @@ export default {
     },
     fieldsName: {
       type: Array
+    },
+    funcTest: {
+      type: Function
     }
   },
 

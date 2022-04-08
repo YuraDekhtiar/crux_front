@@ -69,28 +69,41 @@ export default {
     plugins: {
       type: Array,
       default: () => []
+    },
+    data: {
+      type: Object,
+      default: () => {}
+    },
+    labels: {
+      type: Array,
+      default: () => []
+    },
+    keyMetric: {
+      type: String,
+      default: 'lcp',
+
     }
   },
   data() {
     return {
       chartData: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July'
-        ],
+        labels: this.labels,
         datasets: [
           {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [40, 39, 10, 40, 39, 80, 40]
-          }
-        ]
-      },
+            data: this.data.map(i => i[this.keyMetric].good.count),
+            label: 'GOOD',
+            backgroundColor: '#2E8B57',
+          },
+          {
+            data: this.data.map(i => i[this.keyMetric].needs_improvement.count),
+            label: 'NEEDS INVOROPMENT',
+            backgroundColor: '#FFC300',
+          }, {
+            data: this.data.map(i => i[this.keyMetric].poor.count),
+            label: 'POOR',
+            backgroundColor: '#FF5733',
+          }],
+    },
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false

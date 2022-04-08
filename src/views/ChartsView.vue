@@ -5,8 +5,7 @@
       Кількість URL: {{this.getAllUrls.length}}
     </div>
     <b-tabs content-class="mt-3" align="left">
-      <Preloader v-if="isLoading" color="red" scale="0.6" />
-      <b-tab title="DESKTOP" active  v-else>
+      <b-tab title="DESKTOP" active>
         <div class="chart">
           <img src="../../public/images/cls.svg" class="image" alt="CLS">
           <BarChart :data="dataClsDesktop" :labels="labelsCLS"/>
@@ -24,8 +23,7 @@
         </div>
         <hr/>
       </b-tab>
-      <Preloader v-if="isLoading" color="red" scale="0.6" />
-      <b-tab title="PHONE" v-else>
+      <b-tab title="PHONE">
         <div class="chart">
           <img src="../../public/images/cls.svg" class="image" alt="CLS">
           <BarChart :data="dataClsPhone" :labels="labelsCLS"/>
@@ -112,7 +110,6 @@ export default {
       result = this.filterLCP(data);
       this.dataLcpDesktop = result.data;
       this.labelsLCP = result.label;
-
     },
     groupPhone(data) {
       let result = this.filterCLS(data);

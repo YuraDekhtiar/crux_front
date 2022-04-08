@@ -10,33 +10,21 @@ const routes = [
   {
     path: '/list_url',
     name: 'listUrl',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/UrlList.vue')
   },
   {
     path: '/analysis',
     name: 'analysis',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "analysis" */ '../views/AnalysisView.vue'),
   },
   {
     path: '/charts/:type',
     name: 'charts',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "analysis" */ '../views/ChartsView.vue'),
   },
   {
     path: '/dynamic/',
-    name: 'dynamicChart',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    name: 'chartsLineView',
     component: () => import(/* webpackChunkName: "analysis" */ '../views/ChartsLineView'),
   },
   {

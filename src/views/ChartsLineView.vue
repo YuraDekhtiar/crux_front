@@ -1,44 +1,50 @@
 <template>
   <Preloader v-if="isLoading" color="red" scale="0.6" />
   <div v-else class="content">
+    <div>
+      Кількість URL: {{response.query_url_count}}
+    </div>
     <b-tabs content-class="mt-3" align="left">
-      <Preloader v-if="isLoading" color="red" scale="0.6" />
-      <b-tab title="DESKTOP" active  v-else>
+      <b-tab title="DESKTOP" active>
         <div class="chart">
-          <LineChart/>
-          <div></div>
+          <img src="../../public/images/cls.svg" class="image" alt="CLS">
+          <LineChart :data="response.desktop" :labels="response.labels" :keyMetric="'cls'" />
+          <div>Кількість URL: {{response.res_url_count}}</div>
         </div>
         <hr/>
         <div class="chart">
-          <LineChart/>
+          <img src="../../public/images/fid.svg" class="image" alt="FID">
+          <LineChart :data="response.desktop" :labels="response.labels" :keyMetric="'fid'" />
+          <div>Кількість URL: {{response.res_url_count}}</div>
         </div>
         <hr/>
         <div class="chart">
-          <LineChart/>
-        </div>
-        <hr/>
-      </b-tab>
-      <Preloader v-if="isLoading" color="red" scale="0.6" />
-      <b-tab title="PHONE" active  v-else>
-        <div class="chart">
-          <LineChart/>
-          <div></div>
-        </div>
-        <hr/>
-        <div class="chart">
-          <LineChart/>
-        </div>
-        <hr/>
-        <div class="chart">
-          <LineChart/>
+          <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
+          <LineChart :data="response.desktop" :labels="response.labels" :keyMetric="'lcp'" />
+          <div>Кількість URL: {{response.res_url_count}}</div>
         </div>
         <hr/>
       </b-tab>
-
+      <b-tab title="PHONE">
+        <div class="chart">
+          <img src="../../public/images/cls.svg" class="image" alt="CLS">
+          <LineChart :data="response.phone" :labels="response.labels" :keyMetric="'cls'" />
+        </div>
+        <hr/>
+        <div class="chart">
+          <img src="../../public/images/fid.svg" class="image" alt="FID">
+          <LineChart :data="response.phone" :labels="response.labels" :keyMetric="'fid'" />
+        </div>
+        <hr/>
+        <div class="chart">
+          <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
+          <LineChart :data="response.phone" :labels="response.labels" :keyMetric="'lcp'" />
+        </div>
+        <hr/>
+      </b-tab>
     </b-tabs>
   </div>
 </template>
-
 <script>
 import Preloader from '../components/Preloader'
 import LineChart from "@/components/LineChart";
@@ -51,11 +57,25 @@ export default {
   },
   data() {
     return {
-      isLoading: true
+      isLoading: true,
+      response: {},
     }
   },
   mounted() {
-    this.isLoading = false
+    this.fetch();
+
+  },
+  methods: {
+    async fetch() {
+      try {
+        this.response = await fetch(`http://localhost:3000`, {
+          method: 'GET',
+        }).then(res => res.json());
+      } catch (e) {
+        console.log(e)
+      }
+      this.isLoading = false;
+    }
   }
 }
 </script>
@@ -69,7 +89,6 @@ export default {
 
 .image {
   height: 100px;
-  width: 100%;
 }
 
 </style>

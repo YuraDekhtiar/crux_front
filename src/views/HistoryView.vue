@@ -18,10 +18,10 @@
 
 
   <div class="container text-center  mt-5 mb-5">
-    {{test}}
+    {{responseData}}
     <div class="table-responsive my-5">
       <!-- The table component -->
-      <TableAnalysis :fields='fields' :urlData ="[...responseDataPhone, ...responseDataDesktop]" :fieldsName="fieldsName"></TableAnalysis>
+      <TableAnalysis :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableAnalysis>
     </div>
 
   </div>
@@ -40,20 +40,17 @@ export default {
   },
   data() {
     return {
-      data: [],
-      dataAboutUrl:[],
-      responseDataDesktop: [],
-      responseDataPhone: [],
-      getUrlsFromTable: [],
-      urlForAnalyse: [],
+      responseData: [],
       isLoading: true,
-      urlsId: [],
+      urlsId: [1],
+      urls: ['https://auto.ria.com/uk/'],
     }
   },
   async beforeMount() {
-    await this.getUrls();
-    await this.fetchDataDesktop()
-    await this.fetchDataPhone()
+    //await this.getUrls();
+    await this.fetchData()
+
+    this.sort();
   },
 
   setup() {
@@ -80,24 +77,12 @@ export default {
 
     return{ fields, fieldsName}
   },
-  // data() {
-  //   return {
-  //     data: '',
-  //     formFactor: {
-  //       desktop: 'true',
-  //       phone: 'true',
-  //     },
-  //
-  //     url: 'https://auto.ria.com/uk/',
-  //     loading: true,
-  //   }
-  // },
-  methods: {
-    async fetchDataDesktop() {
-      console.log("start fetch")
 
+  methods: {
+    async fetchData() {
+      console.log("start fetch")
       try {
-        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url_id=${this.urlsId.join('&url_id=')}&form_factor=desktop`, {
+        this.responseData = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url_id=${this.urlsId.join('&url_id=')}`, {
           method: 'GET',
         }).then(res => res.json());
        // this.groupDesktop(this.responseDataDesktop);
@@ -106,30 +91,27 @@ export default {
       }
       this.isLoading = false;
     },
-    async fetchDataPhone() {
-      try {
-        this.responseDataPhone = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url_id=${this.urlsId.join('&url_id=')}&form_factor=phone`, {
-          method: 'GET',
-        }).then(res => res.json());
-      } catch (e) {
-        console.log(e)
-      }
-      console.log("end fetch")
-      this.isLoading = false;
-    },
     async getUrls() {
       try {
-        this.getUrlsFromTable = await fetch(`http://127.0.0.1:3000/adminPanel/url_history`, {
+        this.urls = await fetch(`http://127.0.0.1:3000/adminPanel/url_history`, {
           method: 'GET',
         })
-        .then(res => res.json())
-        this.isLoading = false;
+        .then(res => res.json());
+        this.urlsId = this.urls.map(u => u.id);
       } catch (e) {
         console.log(e)
       }
 
-      this.urlsId = this.getUrlsFromTable.map(u => u.id);
+
+      this.isLoading = false;
     },
+    sort(){
+      this.urls.map(u => {
+        return {
+          url: u
+        }
+      });
+    }
   }
 
 }

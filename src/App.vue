@@ -22,7 +22,7 @@
   color: #2c3e50;
   min-width: 800px;
   margin: 0 auto 0;
-  padding: 60px 20px 10px 20px;
+  padding: 70px 20px 10px 20px;
 
 }
 

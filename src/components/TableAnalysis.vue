@@ -95,6 +95,8 @@ export default {
         }
         console.log(this.checked);
       }
+      else
+        this.checked = [];
     },
     checkUpdate: function() {
       if (this.checked.length === this.filteredList.length) {

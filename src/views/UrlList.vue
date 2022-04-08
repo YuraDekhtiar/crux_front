@@ -11,7 +11,7 @@
       </div>
     </nav>
     <div class="mx-auto p-3" style="width: 500px">
-    <div class="input-group w-100 align-items-center" style="height: 50px" >
+    <div class="input-group w-100 align-items-center">
         <input type="text" class="form-control mr-2" placeholder="Enter url" v-model="url">
         <button type="button" class="h-75 w-25 mr-2 btn btn-info" id="add" v-on:click="addData">Add</button>
         <button type="button" class="h-75 w-25 btn btn-danger" id="delete" v-on:click="deleteData">Delete</button>
@@ -20,18 +20,18 @@
     </div>
     <div style="height: 720px; overflow: auto" class="w-75 mx-auto">
     <Preloader v-if="isLoading"/>
-    <table v-else class="table-bordered w-100">
+    <table v-else class="table-bordered table-striped w-100">
       <thead>
       <tr>
-        <th scope="col"><input type="checkbox" v-model="selectedAll"><span>All</span></th>
+        <th scope="col" style="inline-size: 50px"><input type="checkbox" v-model="selectedAll"><span style="margin-left: 2px">All</span></th>
         <th scope="col">URL</th>
-        <th scope="col">Date of last tracking</th>
+        <th scope="col" >Date of last tracking</th>
         <th scope="col" class="p-2">Status</th>
       </tr>
       </thead>
       <tbody style="height: 1500px">
       <tr v-for="(item, index) in data" :key="index" >
-        <td> <input type="checkbox" v-model="selected" :value="item.id"></td>
+        <td> <input type="checkbox" v-model="selected" :value="item.id" ></td>
         <td class="text-left p-2">{{ item.url }}</td>
         <td>{{ item.last_tracking_date === null? '' : item.last_tracking_date.substring(0,10)}}</td>
         <td v-if="item.success"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" color="green" class="bi bi-check2 fs-2" viewBox="0 0 16 16">
@@ -68,9 +68,6 @@ export default {
     this.fetchData()
   },
   computed: {
-    rows() {
-      return this.data.length
-    },
     selectedAll: {
       get: function() {
         return this.data ? this.selected.length === this.data.length : false;
@@ -141,5 +138,15 @@ export default {
 </script>
 
 <style>
-
+table{
+  --bs-table-bg: transparent;
+  --bs-table-striped-color: #212529;
+  --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+  --bs-table-active-color: #212529;
+  --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+  --bs-table-hover-color: #212529;
+  --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+  color: #212529;
+  --bs-table-accent-bg: var(--bs-table-striped-bg);
+}
 </style>

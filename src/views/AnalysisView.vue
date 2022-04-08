@@ -19,12 +19,12 @@
   <div class="container text-center  mt-5 mb-5">
     <div class="table-responsive my-5">
       <!-- The table component -->
-      <TableAnalysis :fields='fields' :urlData ="urlData" :fieldsName="fieldsName"></TableAnalysis>
+      <TableAnalysis :fields='fields' :urlData ="[...responseDataPhone, ...responseDataDesktop]" :fieldsName="fieldsName"></TableAnalysis>
     </div>
 
   </div>
-  <div v-if="!isLoading"> {{responseDataDesktop}}
-    </div>
+  <div v-if="!isLoading">
+  </div>
 
 
 </template>
@@ -33,7 +33,6 @@
 // Importing the table component
 import TableAnalysis from '../components/TableAnalysis.vue'
 
-
 export default {
   name: "AnalysisView",
   components: {
@@ -41,9 +40,12 @@ export default {
   },
   data() {
     return {
+      data: [],
+      dataAboutUrl:[],
       responseDataDesktop: [],
+      responseDataPhone: [],
       isLoading: true,
-      url: [
+      urls: [
         'https://auto.ria.com/news/',
         'https://auto.ria.com/uk/legkovie/?page=1',
         'https://auto.ria.com/uk/legkovie/?page=2',
@@ -61,31 +63,33 @@ export default {
     }
   },
   beforeMount() {
-    this.fetchData()
+    this.fetchDataDesktop(),
+        this.fetchDataPhone()
   },
+
   setup() {
-    const urlData = [
-
-      {url:"https://auto.ria.com/uk/legkovie/?page=6", form_factor:"phone", lcp:"45", fid: "64", cls: "24"},
-      {url:"https://makeup.com.ua/ua/categorys/20272/", form_factor:"desktop", lcp:"43", fid: "54", cls: "64"},
-      {url:"https://auto.ria.com/uk/legkovie/?page=9", form_factor:"desktop", lcp:"53", fid: "24", cls: "23"},
-      {url:"https://makeup.com.ua/ua/categorys/467/", form_factor:"desktop", lcp:"64", fid: "86", cls: "87"},
-      {url:"https://auto.ria.com/uk/", form_factor:"phone", lcp:"24", fid: "37", cls: "20"},
-      {url:"https://dom.ria.com/uk/prodazha-nedvizhimosti/", form_factor:"phone", lcp:"85", fid: "29", cls: "35"},
-      {url:"https://dom.ria.com/uk/arenda-nedvizhimosti/", form_factor:"desktop", lcp:"54", fid: "57", cls: "56"},
-      {url:"https://auto.ria.com/uk/legkovie/?page=4", form_factor:"phone", lcp:"43", fid: "64", cls: "22"},
-
-    ]
+    // const urlData = [
+    //
+    //   {url:"https://auto.ria.com/uk/legkovie/?page=6", form_factor:"phone", lcp:"45", fid: "64", cls: "24"},
+    //   {url:"https://makeup.com.ua/ua/categorys/20272/", form_factor:"desktop", lcp:"43", fid: "54", cls: "64"},
+    //   {url:"https://auto.ria.com/uk/legkovie/?page=9", form_factor:"desktop", lcp:"53", fid: "24", cls: "23"},
+    //   {url:"https://makeup.com.ua/ua/categorys/467/", form_factor:"desktop", lcp:"64", fid: "86", cls: "87"},
+    //   {url:"https://auto.ria.com/uk/", form_factor:"phone", lcp:"24", fid: "37", cls: "20"},
+    //   {url:"https://dom.ria.com/uk/prodazha-nedvizhimosti/", form_factor:"phone", lcp:"85", fid: "29", cls: "35"},
+    //   {url:"https://dom.ria.com/uk/arenda-nedvizhimosti/", form_factor:"desktop", lcp:"54", fid: "57", cls: "56"},
+    //   {url:"https://auto.ria.com/uk/legkovie/?page=4", form_factor:"phone", lcp:"43", fid: "64", cls: "22"},
+    //
+    // ]
 
     const fields = [
-      'url','form_factor','lcp','fid','cls'
+      'url','form_factor','good','needs_improvement','poor'
     ]
 
     const fieldsName = [
-      'URL','FormFactor','LCP','FID','CLS'
+      'URL','Form Factor','LCP','FID','CLS'
     ]
 
-    return{urlData, fields, fieldsName}
+    return{ fields, fieldsName}
   },
   // data() {
   //   return {
@@ -100,7 +104,7 @@ export default {
   //   }
   // },
   methods: {
-    async fetchData() {
+    async fetchDataDesktop() {
       try {
         this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.url.join('&url=')}&form_factor=desktop`, {
           method: 'GET',
@@ -111,17 +115,37 @@ export default {
         console.log(e)
       }
       this.isLoading = false;
-    }
+    },
+    async fetchDataPhone() {
+      try {
+        this.responseDataPhone = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.urls.join('&url=')}&form_factor=phone`, {
+          method: 'GET',
+        }).then(res => res.json());
+        this.groupPhone(this.responseDataPhone);
+
+      } catch (e) {
+        console.log(e)
+      }
+      this.isLoading = false;
+    },
+    async getUrls() {
+      try {
+        this.urls = '';
+        this.urls = await fetch(`http://127.0.0.1:3000/adminPanel/url_history`, {
+          method: 'GET',
+        })
+            .then(res => res.json())
+        this.isLoading = false;
+      } catch (e) {
+        console.log(e)
+      }
+    },
   }
+
 }
 </script>
 
-<style scoped>
-textarea {
-  width: 100%; /* Ширина поля в процентах */
-  height: 200px; /* Высота поля в пикселах */
-  resize: none; /* Запрещаем изменять размер */
-}
+<style>
 button {
   height: 50px;
   width: 300px;

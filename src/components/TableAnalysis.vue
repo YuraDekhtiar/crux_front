@@ -1,11 +1,5 @@
 <template>
-<header>
-  <div class="button-to-back">
-    <router-link :to="{name:'home'}">
-      <button @click="isElVisible=!isElVisible" class="back-to-home m-3" type="button">Back to home</button>
-    </router-link>
-  </div>
-</header>
+
   <div class="searchBar">
     <!-- Filter Search -->
     <div class="input-group mb-5">
@@ -18,12 +12,10 @@
     <tr>
       <!-- loop through each value of the fields to get the table header -->
       <th>
-        <label class="form-checkbox">
-          <input type="checkbox">All
-        </label>
+          <input type="checkbox" @click="select" v-model="select_all">All
       </th>
-      <th :key='fields[1]' @click="sortTable(fields[0])">
-        {{fieldsName[1]}}
+      <th :key='fields[0]' @click="sortTable(fields[0])">
+        {{fieldsName[0]}}
       </th>
       <th :key='fields[1]'>
         {{fieldsName[1]}}
@@ -38,9 +30,6 @@
       <th :key='fields[4]'>
         {{fieldsName[4]}}
       </th>
-
-
-
       <!--      <th  v-for="(field, index) in fields" :key='field' @click="sortTable(field)" >-->
 
 <!--        {{fieldsName[index]}} <i class="bi bi-sort-alpha-down" aria-label='Sort Icon'></i>-->
@@ -51,11 +40,12 @@
     <tbody>
     <!-- Loop through the list get the each student data -->
     <tr v-for="item in filteredList" :key='item'>
-      <td><input type="checkbox" :value="item.id"></td>
+      <td><input type="checkbox"  :value="item.id" v-model="selected"></td>
       <td class="text-left" v-for="field in fields" :key='field'>{{item[field]}}</td>
     </tr>
     </tbody>
   </table>
+
 </template>
 <script>
 import {computed,ref} from "vue";
@@ -78,10 +68,19 @@ export default {
       type: Function
     }
   },
+  data() {
+    return{
+      select_all: false,
+      selected: []
+    }
+  },
 
-methods:{
+  methods:{
+    select (){
 
-},
+    }
+  },
+
   setup(props) {
     let sort = ref(false);
     let updatedList =  ref([])

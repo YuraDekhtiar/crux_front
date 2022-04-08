@@ -18,6 +18,7 @@
 
 
   <div class="container text-center  mt-5 mb-5">
+    {{test}}
     <div class="table-responsive my-5">
       <!-- The table component -->
       <TableAnalysis :fields='fields' :urlData ="[...responseDataPhone, ...responseDataDesktop]" :fieldsName="fieldsName"></TableAnalysis>
@@ -46,26 +47,13 @@ export default {
       getUrlsFromTable: [],
       urlForAnalyse: [],
       isLoading: true,
-      urls: [
-        'https://auto.ria.com/news/',
-        'https://auto.ria.com/uk/legkovie/?page=1',
-        'https://auto.ria.com/uk/legkovie/?page=2',
-        'https://auto.ria.com/uk/legkovie/?page=3',
-        'https://auto.ria.com/uk/legkovie/?page=4',
-        'https://auto.ria.com/uk/legkovie/?page=5',
-        'https://auto.ria.com/uk/legkovie/?page=10',
-        'https://auto.ria.com/uk/legkovie/?page=12',
-        'https://auto.ria.com/car/used/',
-        'https://auto.ria.com/uk/legkovie/?page=22',
-        'https://auto.ria.com/uk/all_for_auto/',
-        'https://auto.ria.com/uk/legkovie/?page=60',
-        'https://auto.ria.com/uk/newauto/'
-      ],
+      urlsId: [],
     }
   },
-  beforeMount() {
-    this.fetchDataDesktop(),
-        this.fetchDataPhone()
+  async beforeMount() {
+    await this.getUrls();
+    await this.fetchDataDesktop()
+    await this.fetchDataPhone()
   },
 
   setup() {
@@ -106,12 +94,13 @@ export default {
   // },
   methods: {
     async fetchDataDesktop() {
+      console.log("start fetch")
+
       try {
-        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.urls.join('&url=')}&form_factor=desktop`, {
+        this.responseDataDesktop = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url_id=${this.urlsId.join('&url_id=')}&form_factor=desktop`, {
           method: 'GET',
         }).then(res => res.json());
-        this.groupDesktop(this.responseDataDesktop);
-
+       // this.groupDesktop(this.responseDataDesktop);
       } catch (e) {
         console.log(e)
       }
@@ -119,14 +108,13 @@ export default {
     },
     async fetchDataPhone() {
       try {
-        this.responseDataPhone = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url=${this.urls.join('&url=')}&form_factor=phone`, {
+        this.responseDataPhone = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url_id=${this.urlsId.join('&url_id=')}&form_factor=phone`, {
           method: 'GET',
         }).then(res => res.json());
-        this.groupPhone(this.responseDataPhone);
-
       } catch (e) {
         console.log(e)
       }
+      console.log("end fetch")
       this.isLoading = false;
     },
     async getUrls() {
@@ -134,14 +122,13 @@ export default {
         this.getUrlsFromTable = await fetch(`http://127.0.0.1:3000/adminPanel/url_history`, {
           method: 'GET',
         })
-            .then(res => res.json())
-        for(let i = 0; i < this.getUrlsFromTable; i++) {
-          this.urlForAnalyse = this.getUrlsFromTable[i].url;
-        }
+        .then(res => res.json())
         this.isLoading = false;
       } catch (e) {
         console.log(e)
       }
+
+      this.urlsId = this.getUrlsFromTable.map(u => u.id);
     },
   }
 

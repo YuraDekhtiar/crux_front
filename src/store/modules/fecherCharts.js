@@ -1,24 +1,15 @@
 export default {
     state: {
-        urls: [],
-        // Метрики які ми отримали під час онлайн аналізу
-        dataCharts: []
+        urlId: []
     },
     getters: {
-        getAllUrls(state) {
-            return state.urls;
-        },
-        getDataCharts(state) {
-            return state.dataCharts;
+        getUrlId(state) {
+            return state.urlId;
         }
     },
     mutations: {
-        setUrls(state, data) {
-            state.urls = data;
-
-        },
-        setDataCharts(state, data) {
-            state.dataCharts = data;
+        setUrlId(state, data) {
+            state.urlId = data;
         }
     },
     actions: {
@@ -27,13 +18,12 @@ export default {
                 const response = await fetch(`http://localhost:3000/adminPanel/url_history`, {
                     method: 'GET',
                 }).then(res => res.json());
-                ctx.commit('setUrls', response.map(i => i.url));
+                ctx.commit('setUrlId', response.map(i => i.id));
             } catch (e) {
                 console.log(e)
             }
         },
         async analyzeUrl(ctx, data) {
-            ctx.commit('setUrls', data.url);
             try {
                 const response = await fetch('http://127.0.0.1:3000/adminPanel/analyze_url', {
                     method: 'POST',
@@ -44,7 +34,7 @@ export default {
                 }).then(r => {
                     return r.json();
                 });
-                ctx.commit('setDataCharts', response);
+                ctx.commit('setUrlId', response.url_id);
             } catch (e) {
                 console.log(e)
             }

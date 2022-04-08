@@ -116,7 +116,6 @@ export default {
     },
     async deleteData() {
       let data = {id: this.selected}
-      console.log(data)
       const response = await fetch('http://127.0.0.1:3000/dataFetcher/delete_url', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },

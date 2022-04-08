@@ -24,7 +24,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "analysis" */ '../views/HistoryView.vue'),
   },
   {
-    path: '/charts/:type',
+    path: '/statistics/',
     name: 'charts',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -32,7 +32,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "analysis" */ '../views/ChartsView.vue'),
   },
   {
-    path: '/dynamic/',
+    path: '/dynamics/',
     name: 'dynamicChart',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

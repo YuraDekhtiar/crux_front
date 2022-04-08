@@ -1,8 +1,5 @@
 <template>
-  <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  </head>
-  <div v-if="isElVisible">
+  <div v-if="isLoading">
     <div class="container">
       <img src="../../public/images/logo.jpeg">
       <div class="row">
@@ -39,6 +36,7 @@
 
 <script>
 import Preloader from '../components/Preloader'
+import {mapGetters} from "vuex";
 
 export default {
   name: 'HomeView',
@@ -59,16 +57,19 @@ export default {
       isLoading: true,
     }
   },
-    methods: {
+  computed: mapGetters(['getUrlId']),
+  methods: {
       async analyzeUrls() {
       if(this.textWithTextarea.trim().length !== 0) {
+        this.isLoading = true;
         this.arrayOfUrls = this.textWithTextarea.split("\n");
         let data = {url:this.arrayOfUrls.filter(i => i.length !== 0).map(i => i.trim())}
         await this.$store.dispatch('analyzeUrl', data);
-        await this.$router.push({path: '/charts/analyze'});
-        this.isLoading = false;
+        await this.$router.push({path: '/statistics'});
       }
-    },
+        this.isLoading = false;
+
+      },
     loadingUrlFromFile(event) {
       const file = event.target.files[0];
       const reader = new FileReader();

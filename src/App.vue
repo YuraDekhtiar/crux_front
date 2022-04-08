@@ -3,8 +3,8 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/list_url">URL List</router-link> |
     <router-link to="/history">History</router-link> |
-    <router-link to="/charts/history">Test Chart</router-link> |
-    <router-link to="/dynamic/">Dynamic Chart</router-link>
+    <router-link to="/statistics">Statistics</router-link> |
+    <router-link to="/dynamics">Dynamics</router-link>
   </nav>
   <router-view/>
 </template>

@@ -71,7 +71,6 @@ export default {
         await this.$store.dispatch('analyzeUrl', data);
         await this.$router.push({path: '/didsribution'});
       }
-
     },
     loadingUrlFromFile(event) {
       const file = event.target.files[0];

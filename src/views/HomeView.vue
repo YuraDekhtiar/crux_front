@@ -11,16 +11,16 @@
             <label>or</label>
           </div>
           <div class="main-part_input">
-              <input
-                  class="form-control"
-                  accept=".txt" type="file"
-                  id="formFile"
-                  @change="loadingUrlFromFile"
-              >
+            <input
+                class="form-control"
+                accept=".txt" type="file"
+                id="formFile"
+                @change="loadingUrlFromFile"
+            >
           </div>
         </div>
       </div>
-        <div class="input-group m-3">
+      <div class="input-group m-3">
           <textarea type="text"
                     class="form-control"
                     placeholder="Input URL..."
@@ -28,28 +28,26 @@
                     v-model="textWithTextarea"
                     rows="10"
           />
-        </div>
+      </div>
       <button @click="isElVisible=!isElVisible" class="btn btn-outline-secondary">ANALYZE</button>
     </div>
   </div>
   <div v-else>
     <p>All data has been successfully downloaded, go to the button to view the dynamics change!</p>
- <div class="page-analysis_main" >
-    <button @click="analyzeUrls" class="btn btn-outline-secondary" value="false">Review tracking</button>
- </div>
+    <div class="page-analysis_main" >
+      <button @click="analyzeUrls" class="btn btn-outline-secondary" value="false">Review tracking</button>
+    </div>
 
   </div>
 
-<!--  <Preloader v-else/>-->
+  <!--  <Preloader v-else/>-->
 </template>
 
 <script>
 import Preloader from '../components/Preloader'
 import {mapGetters} from "vuex";
-
 export default {
   name: 'HomeView',
-
   components: {
     // eslint-disable-next-line vue/no-unused-components
     Preloader,
@@ -71,7 +69,7 @@ export default {
   },
   computed: mapGetters(['getUrlId']),
   methods: {
-      async analyzeUrls() {
+    async analyzeUrls() {
       if(this.textWithTextarea.trim().length !== 0) {
         this.isLoading = true;
         this.arrayOfUrls = this.textWithTextarea.split("\n");
@@ -116,5 +114,4 @@ button {
   justify-content: space-around;
   margin: 10px  30px;
 }
-
 </style>

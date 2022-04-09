@@ -1,9 +1,11 @@
 <template>
   <Preloader v-if="isLoading" />
   <div v-else class="content">
-    <Datepicker v-model="date" :enableTimePicker="false" @update:modelValue="fetch"></Datepicker>
     <div>
       Query URL: {{response.query_url_count}} | Result URL: {{response.result_url_count}}
+    </div>
+    <div style="width: 300px; margin:0 auto" class="mt-2">
+      <Datepicker v-model="date" :enableTimePicker="false" @update:modelValue="fetch"/>
     </div>
     <b-tabs content-class="mt-3" align="left">
       <b-tab title="DESKTOP" active>
@@ -78,19 +80,16 @@ export default {
   },
   methods: {
     async fetch() {
-      console.log(`http://localhost:3000/statistics_charts/?url_id=${this.getUrlId.join('&url_id=')}&date=${this.date.toISOString().slice(0, 10)}`)
       this.isLoading = true;
       this.response = [];
       try {
-        this.response = await fetch(`http://localhost:3000/statistics_charts/?url_id=${this.getUrlId.join('&url_id=')}&date=${this.date.toISOString().slice(0, 10)}`, {
+        this.response = await fetch(`${this.$store.state.backendUrl}/statistics_charts/?url_id=${this.getUrlId.join('&url_id=')}&date=${this.date.toISOString().slice(0, 10)}`, {
           method: 'GET',
         }).then(res => res.json());
       } catch (e) {
         console.log(e)
       }
       this.isLoading = false;
-      console.log( this.response)
-
     }
   }
 }

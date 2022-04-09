@@ -1,13 +1,13 @@
 <template>
   <div class="listUrl">
     <div class="d-flex">
-    <div class="mx-auto p-3" style="width: 480px" >
+    <div class="mx-auto p-3" style="width: 500px" >
       <div class="input-group w-100 align-items-center">
         <input class="form-control mr-2" type="search" placeholder="Search" v-model.trim="search">
         <button class="btn h-75 mr-2 w-25 btn btn-outline-secondary" type="button" id="search" :onclick="searchUrl">Search</button>
       </div>
     </div>
-    <div class="mx-auto p-3" style="width: 480px">
+    <div class="mx-auto p-3" style="width: 500px">
     <div class="input-group w-100 align-items-center">
         <input type="text" class="form-control mr-2" placeholder="Enter url" v-model="url">
         <button type="button" class="h-75 w-25 mr-2 btn btn-info" id="add" v-on:click="addData">Add</button>

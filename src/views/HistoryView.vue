@@ -1,9 +1,7 @@
 <template>
-  <div class="container text-center">
-    <div class="table-responsive ">
+    <div>
       <TableHistory :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableHistory>
     </div>
-  </div>
 </template>
 
 <script>

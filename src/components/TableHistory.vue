@@ -1,19 +1,19 @@
 <template>
   <div class="d-flex">
-    <div class="mx-auto p-3" style="width: 900px">
-      <div class="input-group w-100 ">
-        <div style="width: 25%; height: 50px; float: left">
+    <div class="pb-3" style="margin-left: 225px; width: 900px">
+      <div class="input-group w-100 align-items-center">
           <input type="text" class="form-control mr-2" style="float: left" placeholder="Enter text for search..." v-model="searchQuery">
-        </div>
-        <div style="width: 75%; height:  50px; float: right">
-          <button type="button" class="h-75 w-25 mr-3 btn btn-info" id="add" v-on:click="viewGraphs">View graphs</button>
-          <button type="button" class="h-75 w-30 btn btn-danger" id="delete" v-on:click="dynamicsOfChange">Dynamics of change</button>
-        </div>
+      </div>
+    </div>
+    <div class="mx-5 pb-3" style="width: 415px">
+      <div class="btn-group w-100 align-items-center" role="group">
+          <button type="button" class="h-75 w-50 mr-2 btn btn-info" v-on:click="viewGraphs">View graphs</button>
+          <button type="button" class="h-75 w-50 btn btn-danger" v-on:click="dynamicsOfChange">Dynamics of change</button>
       </div>
     </div>
   </div>
-<div style="height: 720px; overflow: auto">
-  <table id="tableComponent" class="table table-bordered " style="table-layout: fixed; "    >
+<div style="height: 720px; overflow: auto" class="w-75 mx-auto">
+  <table id="tableComponent" class="table table-bordered w-100" style="table-layout: fixed;">
     <thead>
     <tr>
       <th style="table-layout: fixed; width: 40px">
@@ -32,7 +32,7 @@
     </tr>
     </thead>
 
-    <tbody>
+    <tbody style="height: 1500px">
     <template v-for="(item, index) in filteredList" :key="index">
       <tr>
         <td class="align-middle" rowspan="2" >

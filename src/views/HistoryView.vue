@@ -3,16 +3,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" >
   </head>
 
-  <div class="container text-center  mt-5 mb-5">
-    <div class="table-responsive my-5">
-      <!-- The table component -->
+  <div class="container text-center">
+    <div class="table-responsive ">
       <TableHistory :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableHistory>
     </div>
   </div>
 </template>
 
 <script>
-// Importing the table component
 import TableHistory from '../components/TableHistory.vue'
 
 export default {

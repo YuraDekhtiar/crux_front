@@ -2,7 +2,7 @@
   <Preloader v-if="isLoading" />
   <div v-else class="content">
     <div>
-      Query URL: {{response.query_url_count}} | Result URL: {{response.result_url_count}}
+      Tracking url: {{response.query_url_count}} | Tests url: {{response.result_url_count}}
     </div>
     <div style="width: 300px; margin:0 auto" class="mt-2">
       <Datepicker v-model="date" :enableTimePicker="false" @update:modelValue="fetch"/>
@@ -18,7 +18,7 @@
         <div class="chart mb-4">
           <img src="../../public/images/fid.svg" class="image" alt="FID">
           <BarChart :data="response.desktop.fid" :labels="response.desktop.fid.labels"/>
-          <div class="float-left ">X - "Percentile" | Y - "URL count"</div>
+          <div class="float-left ">X - "Millisecond" | Y - "URL count"</div>
         </div>
         <hr/>
         <div class="chart mb-4">
@@ -37,7 +37,7 @@
         <div class="chart mb-4">
           <img src="../../public/images/fid.svg" class="image" alt="FID">
           <BarChart :data="response.phone.fid" :labels="response.phone.fid.labels"/>
-          <div class="float-left ">X - "Percentile" | Y - "URL count"</div>
+          <div class="float-left ">X - "Millisecond" | Y - "URL count"</div>
         </div>
         <hr/>
         <div class="chart mb-4">

@@ -23,13 +23,13 @@
       <div class="input-group m-3">
         <textarea type="text"
                   class="form-control"
-                  placeholder="Input URL..."
+                  placeholder="htttp://example.com/"
                   aria-describedby="basic-addon2"
                   v-model="textWithTextarea"
                   rows="10"
         />
       </div>
-      <button @click="analyzeUrls" class="btn btn-outline-secondary" value="false">ANALYZE</button>
+      <button @click="analyzeUrls" class="btn btn-info" value="false">ANALYZE</button>
     </div>
   </div>
   <Preloader v-else/>
@@ -69,7 +69,7 @@ export default {
         this.arrayOfUrls = this.textWithTextarea.split("\n");
         let data = {url:this.arrayOfUrls.filter(i => i.length !== 0).map(i => i.trim())}
         await this.$store.dispatch('analyzeUrl', data);
-        await this.$router.push({path: '/didsribution'});
+        await this.$router.push({path: '/distribution'});
       }
     },
     loadingUrlFromFile(event) {

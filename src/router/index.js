@@ -24,7 +24,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "analysis" */ '../views/HistoryView.vue'),
   },
   {
-    path: '/didsribution/',
+    path: '/distribution/',
     name: 'charts',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -33,7 +33,7 @@ const routes = [
   },
   {
     path: '/dynamics/',
-    name: 'dynamicChart',
+    name: 'dynamicsChart',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.

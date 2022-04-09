@@ -58,7 +58,6 @@ export default {
       search: '',
       selected: [],
       isLoading: true,
-
     }
   },
   beforeMount() {

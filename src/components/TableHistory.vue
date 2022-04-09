@@ -8,7 +8,7 @@
     <div class="mr-auto pb-3 pt-3" style="width: 25%">
       <div class="btn-group w-100 align-items-center" role="group">
           <button type="button" class="h-75 w-50 mr-2 btn btn-info" v-on:click="viewGraphs">View graphs</button>
-          <button type="button" class="h-75 w-50 btn btn-danger" v-on:click="dynamicsOfChange">Dynamics of change</button>
+          <button type="button" class="h-75 w-50 btn btn-info" v-on:click="dynamicsOfChange">Dynamics of change</button>
       </div>
     </div>
   </div>
@@ -69,7 +69,6 @@
 </template>
 <script>
 import {computed,ref} from "vue";
-// Importing  the lodash library
 import { sortBy } from 'lodash';
 import ProgressBar from "@/components/ProgressBar";
 

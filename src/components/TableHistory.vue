@@ -1,11 +1,11 @@
 <template>
   <div class="d-flex">
-    <div class="pb-3 pt-3" style="margin-left: 225px; width: 900px">
+    <div class="ml-auto pb-3 pt-3" style="width: 950px">
       <div class="input-group w-100 align-items-center">
           <input type="text" class="form-control mr-2" style="float: left" placeholder="Enter text for search..." v-model="searchQuery">
       </div>
     </div>
-    <div class="mx-5 pb-3 pt-3" style="width: 415px">
+    <div class="mr-auto pb-3 pt-3" style="width: 425px">
       <div class="btn-group w-100 align-items-center" role="group">
           <button type="button" class="h-75 w-50 mr-2 btn btn-info" v-on:click="viewGraphs">View graphs</button>
           <button type="button" class="h-75 w-50 btn btn-danger" v-on:click="dynamicsOfChange">Dynamics of change</button>
@@ -28,7 +28,6 @@
       <th v-for="(item, index) in fieldsName.filter(i => i !== 'URL' && i!== 'Device')" :key="index">
         {{item}}
       </th>
-
     </tr>
     </thead>
 

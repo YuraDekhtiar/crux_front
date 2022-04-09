@@ -10,7 +10,6 @@
           <img src="../../public/images/cls.svg" class="image" alt="CLS">
           <BarChart :data="response.desktop.cls" :labels="response.desktop.cls.labels"/>
           <div class="float-left ">X - "Percentile" | Y - "URL count"</div>
-
         </div>
         <hr/>
         <div class="chart mb-4">
@@ -26,19 +25,22 @@
         </div>
       </b-tab>
       <b-tab title="PHONE">
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/cls.svg" class="image" alt="CLS">
           <BarChart :data="response.phone.cls" :labels="response.phone.cls.labels"/>
+          <div class="float-left ">X - "Percentile" | Y - "URL count"</div>
         </div>
         <hr/>
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/fid.svg" class="image" alt="FID">
           <BarChart :data="response.phone.fid" :labels="response.phone.fid.labels"/>
+          <div class="float-left ">X - "Percentile" | Y - "URL count"</div>
         </div>
         <hr/>
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
           <BarChart :data="response.phone.lcp" :labels="response.phone.lcp.labels"/>
+          <div class="float-left ">X - "Millisecond" | Y - "URL count"</div>
         </div>
         <hr/>
       </b-tab>

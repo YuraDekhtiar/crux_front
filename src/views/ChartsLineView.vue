@@ -26,22 +26,22 @@
         <hr/>
       </b-tab>
       <b-tab title="PHONE">
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/cls.svg" class="image" alt="CLS">
           <LineChart :data="response.phone" :labels="response.labels" :keyMetric="'cls'" />
-          <div>Кількість URL: {{response.res_url_count}}</div>
+          <div class="float-left ">X - "Date" | Y - "URL count"</div>
         </div>
         <hr/>
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/fid.svg" class="image" alt="FID">
           <LineChart :data="response.phone" :labels="response.labels" :keyMetric="'fid'" />
-          <div>Кількість URL: {{response.res_url_count}}</div>
+          <div class="float-left ">X - "Date" | Y - "URL count"</div>
         </div>
         <hr/>
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
           <LineChart :data="response.phone" :labels="response.labels" :keyMetric="'lcp'" />
-          <div>Кількість URL: {{response.res_url_count}}</div>
+          <div class="float-left ">X - "Date" | Y - "URL count"</div>
         </div>
         <hr/>
       </b-tab>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoading">
+  <div v-if="!isLoading">
     <div class="container">
       <img src="../../public/images/logo.jpeg">
       <div class="row">
@@ -32,6 +32,7 @@
       <button @click="analyzeUrls" class="btn btn-outline-secondary" value="false">ANALYZE</button>
     </div>
   </div>
+  <Preloader v-else/>
 </template>
 
 <script>
@@ -57,6 +58,9 @@ export default {
       isLoading: true,
     }
   },
+  mounted() {
+    this.isLoading = false;
+  },
   computed: mapGetters(['getUrlId']),
   methods: {
       async analyzeUrls() {
@@ -67,9 +71,8 @@ export default {
         await this.$store.dispatch('analyzeUrl', data);
         await this.$router.push({path: '/didsribution'});
       }
-        this.isLoading = false;
 
-      },
+    },
     loadingUrlFromFile(event) {
       const file = event.target.files[0];
       const reader = new FileReader();

@@ -75,7 +75,7 @@ export default {
   methods: {
     async fetch() {
       try {
-        this.response = await fetch(`http://localhost:3000/dynamics_charts/?url_id=${this.getUrlId.join('&url_id=')}&date_from=2022-03-30&date_to=2022-04-08`, {
+        this.response = await fetch(`http://localhost:3000/dynamics_charts/?url_id=${this.getUrlId.join('&url_id=')}&date_from=2022-03-30&date_to=2022-04-12`, {
           method: 'GET',
         }).then(res => res.json());
       } catch (e) {

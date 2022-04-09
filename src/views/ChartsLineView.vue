@@ -1,6 +1,9 @@
 <template>
   <Preloader v-if="isLoading" color="red" scale="0.6" />
   <div v-else class="content">
+    <div>
+      Query URL: {{response.query_url_count}} | Result URL: {{response.result_url_count}}
+    </div>
     <b-tabs content-class="mt-3" align="left">
       <b-tab title="DESKTOP" active>
         <div class="chart mb-4">

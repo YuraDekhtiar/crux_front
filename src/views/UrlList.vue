@@ -145,4 +145,9 @@ table{
   color: #212529;
   --bs-table-accent-bg: var(--bs-table-striped-bg);
 }
+thead th {
+  position: sticky;
+  top: 0;
+  background: white;
+}
 </style>

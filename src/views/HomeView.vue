@@ -29,13 +29,13 @@
                     rows="10"
           />
       </div>
-      <button @click="isElVisible=!isElVisible" class="btn btn-outline-secondary">ANALYZE</button>
+      <button @click="isElVisible=!isElVisible" class="btn btn-info">ANALYZE</button>
     </div>
   </div>
   <div v-else>
     <p>All data has been successfully downloaded, go to the button to view the dynamics change!</p>
     <div class="page-analysis_main" >
-      <button @click="analyzeUrls" class="btn btn-outline-secondary" value="false">Review tracking</button>
+      <button @click="analyzeUrls" class="btn btn-info" value="false">Review tracking</button>
     </div>
 
   </div>
@@ -75,7 +75,7 @@ export default {
         this.arrayOfUrls = this.textWithTextarea.split("\n");
         let data = {url:this.arrayOfUrls.filter(i => i.length !== 0).map(i => i.trim())}
         await this.$store.dispatch('analyzeUrl', data);
-        await this.$router.push({path: '/didsribution'});
+        await this.$router.push({path: '/distribution'});
       }
     },
     loadingUrlFromFile(event) {

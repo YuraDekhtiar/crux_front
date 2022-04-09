@@ -16,13 +16,13 @@
       </div>
     </div>
   </div>
-
+<div style="height: 720px; overflow: auto">
   <table id="tableComponent" class="table table-bordered table-striped">
     <thead>
     <tr>
       <!-- loop through each value of the fields to get the table header -->
       <th>
-          <input type="checkbox" v-on:click="checkAll()" v-model="checkedAll">All
+          <input type="checkbox" v-on:click="checkAll()" v-model="checkedAll">
       </th>
       <th :key='fields[0]' @click="sortTable(fields[0])">
         {{fieldsName[0]}}
@@ -47,7 +47,7 @@
     </tr>
     </thead>
 
-    <tbody>
+    <tbody style="height: 1500px">
     <!-- Loop through the list get the each student data -->
     <tr v-for="item in filteredList" :key='item'>
       <td><input type="checkbox" v-bind:value='item.url_id' v-model="checked" v-on:change="checkUpdate()" ></td>
@@ -67,7 +67,7 @@
     </tr>
     </tbody>
   </table>
-
+</div>
 </template>
 <script>
 import {computed,ref} from "vue";
@@ -159,5 +159,10 @@ export default {
 <style scoped>
 table th:hover {
   background:#f2f2f2;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  background: white;
 }
 </style>

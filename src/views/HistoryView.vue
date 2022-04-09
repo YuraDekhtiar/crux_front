@@ -1,8 +1,6 @@
 <template>
-  <div v-if="!isLoading" class="container text-center">
-    <div class="table-responsive ">
+  <div v-if="!isLoading">
       <TableHistory :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableHistory>
-    </div>
   </div>
   <Preloader v-else/>
 

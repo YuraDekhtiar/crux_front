@@ -15,7 +15,7 @@ export default {
     actions: {
         async fetchAllUrlHistory(ctx) {
             try {
-                const response = await fetch(`http://localhost:3000/adminPanel/tracked_url`, {
+                const response = await fetch(`${this.state.backendUrl}/adminPanel/tracked_url`, {
                     method: 'GET',
                 }).then(res => res.json());
                 ctx.commit('setUrlId', response.map(i => i.id));
@@ -25,7 +25,7 @@ export default {
         },
         async analyzeUrl(ctx, data) {
             try {
-                const response = await fetch('http://127.0.0.1:3000/adminPanel/analyze_url', {
+                const response = await fetch(`${this.state.backendUrl}/adminPanel/analyze_url`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

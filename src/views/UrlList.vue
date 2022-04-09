@@ -84,7 +84,7 @@ export default {
     async fetchData() {
       try {
         this.responseData = '';
-        this.responseData = await fetch(`http://127.0.0.1:3000/dataFetcher/tracking_url`, {
+        this.responseData = await fetch(`${this.$store.state.backendUrl}/dataFetcher/tracking_url`, {
           method: 'GET',
         })
             .then(res => res.json())
@@ -97,7 +97,7 @@ export default {
     async addData() {
       try {
         let data = {url: [this.url]}
-        const response = await fetch('http://127.0.0.1:3000/dataFetcher/add_url', {
+        const response = await fetch(`${this.$store.state.backendUrl}/dataFetcher/add_url`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -113,7 +113,7 @@ export default {
     },
     async deleteData() {
       let data = {id: this.selected}
-      const response = await fetch('http://127.0.0.1:3000/dataFetcher/delete_url', {
+      const response = await fetch(`${this.$store.state.backendUrl}/dataFetcher/delete_url`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -128,7 +128,6 @@ export default {
       else
         this.data = this.responseData;
     }
-
   },
 }
 </script>

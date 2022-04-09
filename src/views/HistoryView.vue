@@ -40,19 +40,9 @@ export default {
   },
 
   methods: {
-    async fetchDataTest() {
-      try {
-        this.responseData = await fetch(`http://127.0.0.1:3000/`, {
-          method: 'GET',
-        }).then(res => res.json());
-      } catch (e) {
-        console.log(e)
-      }
-      this.isLoading = false;
-    },
     async fetchData() {
       try {
-        this.responseData = await fetch(`http://localhost:3000/adminPanel/metrics_by_url_id/`, {
+        this.responseData = await fetch(`${this.$store.state.backendUrl}/adminPanel/metrics_by_url_id/`, {
           method: 'GET',
         }).then(res => res.json());
       } catch (e) {

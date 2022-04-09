@@ -1,6 +1,7 @@
 <template>
-  <Preloader v-if="isLoading" color="red" scale="0.6" />
+  <Preloader v-if="isLoading" />
   <div v-else class="content">
+    <Datepicker v-model="date" :enableTimePicker="false" @update:modelValue="fetch"></Datepicker>
     <div>
       Query URL: {{response.query_url_count}} | Result URL: {{response.result_url_count}}
     </div>
@@ -51,36 +52,45 @@
 <script>
 import Preloader from '../components/Preloader'
 import BarChart from "@/components/BarChart";
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import {mapGetters} from 'vuex'
 
 export default {
   name: 'ChartsView.vue',
   components: {
     BarChart,
-    Preloader },
+    Preloader,
+    Datepicker
+  },
   data() {
     return {
       isLoading: true,
       response: [],
+      date: new Date(),
     }
   },
   computed: mapGetters(['getUrlId']),
   async mounted() {
     if (this.getUrlId.length === 0)
       await this.$store.dispatch('fetchAllUrlHistory');
-
     await this.fetch();
-    this.isLoading = false;
   },
   methods: {
     async fetch() {
+      console.log(`http://localhost:3000/statistics_charts/?url_id=${this.getUrlId.join('&url_id=')}&date=${this.date.toISOString().slice(0, 10)}`)
+      this.isLoading = true;
+      this.response = [];
       try {
-        this.response = await fetch(`http://localhost:3000/statistics_charts/?url_id=${this.getUrlId.join('&url_id=')}&date=2022-04-08`, {
+        this.response = await fetch(`http://localhost:3000/statistics_charts/?url_id=${this.getUrlId.join('&url_id=')}&date=${this.date.toISOString().slice(0, 10)}`, {
           method: 'GET',
         }).then(res => res.json());
       } catch (e) {
         console.log(e)
       }
+      this.isLoading = false;
+      console.log( this.response)
+
     }
   }
 }

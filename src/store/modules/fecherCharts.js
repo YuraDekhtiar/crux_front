@@ -15,7 +15,7 @@ export default {
     actions: {
         async fetchAllUrlHistory(ctx) {
             try {
-                const response = await fetch(`http://localhost:3000/adminPanel/url_history`, {
+                const response = await fetch(`http://localhost:3000/adminPanel/tracked_url`, {
                     method: 'GET',
                 }).then(res => res.json());
                 ctx.commit('setUrlId', response.map(i => i.id));

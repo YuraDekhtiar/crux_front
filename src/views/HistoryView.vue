@@ -1,7 +1,11 @@
 <template>
-    <div>
+  <div v-if="!isLoading" class="container text-center">
+    <div class="table-responsive ">
       <TableHistory :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableHistory>
     </div>
+  </div>
+  <Preloader v-else/>
+
 </template>
 
 <script>
@@ -22,6 +26,8 @@ export default {
   },
   async beforeMount() {
     await this.fetchData()
+    this.isLoading = false;
+
   },
 
   setup() {

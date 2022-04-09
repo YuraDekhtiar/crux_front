@@ -8,10 +8,7 @@
       <!-- The table component -->
       <TableHistory :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableHistory>
     </div>
-
   </div>
-
-
 </template>
 
 <script>
@@ -32,10 +29,7 @@ export default {
     }
   },
   async beforeMount() {
-    await this.getUrls();
     await this.fetchData()
-
-    //this.sort();
   },
 
   setup() {
@@ -46,14 +40,13 @@ export default {
     const fieldsName = [
       'URL','Device','LCP','FID','CLS'
     ]
-
     return{ fields, fieldsName}
   },
 
   methods: {
-    async fetchData() {
+    async fetchDataTest() {
       try {
-        this.responseData = await fetch(`http://127.0.0.1:3000/adminPanel/metrics/?url_id=${this.urlsId.join('&url_id=')}`, {
+        this.responseData = await fetch(`http://127.0.0.1:3000/`, {
           method: 'GET',
         }).then(res => res.json());
       } catch (e) {
@@ -61,29 +54,17 @@ export default {
       }
       this.isLoading = false;
     },
-    async getUrls() {
+    async fetchData() {
       try {
-        this.urls = await fetch(`http://127.0.0.1:3000/adminPanel/url_history`, {
+        this.responseData = await fetch(`http://localhost:3000/adminPanel/metrics_by_url_id/`, {
           method: 'GET',
-        })
-            .then(res => res.json());
-        this.urlsId = this.urls.map(u => u.id);
+        }).then(res => res.json());
       } catch (e) {
         console.log(e)
       }
-
-
       this.isLoading = false;
     },
-    // sort(){
-    //   this.urls.map(u => {
-    //     return {
-    //       url: u
-    //     }
-    //   });
-    // }
   }
-
 }
 </script>
 

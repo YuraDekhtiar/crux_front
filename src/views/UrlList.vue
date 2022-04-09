@@ -1,7 +1,4 @@
 <template>
-  <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  </head>
   <div class="listUrl">
     <div class="d-flex">
     <nav class="mx-auto p-3" style="width: 500px" >
@@ -20,7 +17,7 @@
     </div>
     <div style="height: 720px; overflow: auto" class="w-75 mx-auto">
     <Preloader v-if="isLoading"/>
-    <table v-else class="table-bordered table-striped w-100">
+    <table v-else class="table-bordered w-100">
       <thead>
       <tr>
         <th scope="col" style="inline-size: 50px"><input type="checkbox" v-model="selectedAll"><span style="margin-left: 2px">All</span></th>

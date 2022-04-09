@@ -1,29 +1,26 @@
 <template>
   <Preloader v-if="isLoading" color="red" scale="0.6" />
   <div v-else class="content">
-    <div>
-      Кількість URL: {{response.query_url_count}}
-    </div>
     <b-tabs content-class="mt-3" align="left">
       <b-tab title="DESKTOP" active>
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/cls.svg" class="image" alt="CLS">
           <BarChart :data="response.desktop.cls" :labels="response.desktop.cls.labels"/>
-          Кількість URL: {{response.res_url_count}}
+          <div class="float-left ">X - "Percentile" | Y - "URL count"</div>
+
         </div>
         <hr/>
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/fid.svg" class="image" alt="FID">
           <BarChart :data="response.desktop.fid" :labels="response.desktop.fid.labels"/>
-          Кількість URL: {{response.res_url_count}}
+          <div class="float-left ">X - "Percentile" | Y - "URL count"</div>
         </div>
         <hr/>
-        <div class="chart">
+        <div class="chart mb-4">
           <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
           <BarChart :data="response.desktop.lcp" :labels="response.desktop.lcp.labels"/>
-          Кількість URL: {{response.res_url_count}}
+          <div class="float-left ">X - "Millisecond" | Y - "URL count"</div>
         </div>
-        <hr/>
       </b-tab>
       <b-tab title="PHONE">
         <div class="chart">

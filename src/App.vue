@@ -3,8 +3,8 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/list_url">URL List</router-link> |
     <router-link to="/history">History</router-link> |
-    <router-link to="/statistics">Statistics</router-link> |
-    <router-link to="/dynamics">Dynamics</router-link>
+    <router-link to="/didsribution">Didsribution</router-link> |
+    <router-link to="/dynamics">Dynamik of Didsribution</router-link>
   </nav>
   <router-view/>
 </template>
@@ -20,7 +20,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  min-width: 800px;
+  min-width: 1200px;
   margin: 0 auto 0;
   padding: 70px 20px 10px 20px;
 

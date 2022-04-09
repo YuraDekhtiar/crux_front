@@ -1,8 +1,4 @@
 <template>
-  <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  </head>
-
   <div class="d-flex">
     <div class="mx-auto p-3" style="width: 900px">
       <div class="input-group w-100 ">
@@ -17,65 +13,72 @@
     </div>
   </div>
 <div style="height: 720px; overflow: auto">
-  <table id="tableComponent" class="table table-bordered table-striped">
+  <table id="tableComponent" class="table table-bordered " style="table-layout: fixed; "    >
     <thead>
     <tr>
-      <!-- loop through each value of the fields to get the table header -->
-      <th>
-          <input type="checkbox" v-on:click="checkAll()" v-model="checkedAll">
+      <th style="table-layout: fixed; width: 40px">
+        <input type="checkbox" v-on:click="checkAll()" v-model="checkedAll">
       </th>
-      <th :key='fields[0]' @click="sortTable(fields[0])">
+      <th style="width: 60%">
         {{fieldsName[0]}}
       </th>
-      <th :key='fields[1]'>
+      <th style="width: 70px">
         {{fieldsName[1]}}
       </th>
-      <th :key='fields[2]'>
-        {{fieldsName[2]}}
+      <th v-for="(item, index) in fieldsName.filter(i => i !== 'URL' && i!== 'Device')" :key="index">
+        {{item}}
       </th>
 
-      <th :key='fields[3]'>
-        {{fieldsName[3]}}
-      </th>
-      <th :key='fields[4]'>
-        {{fieldsName[4]}}
-      </th>
-      <!--      <th  v-for="(field, index) in fields" :key='field' @click="sortTable(field)" >-->
-
-<!--        {{fieldsName[index]}} <i class="bi bi-sort-alpha-down" aria-label='Sort Icon'></i>-->
-<!--      </th>-->
     </tr>
     </thead>
 
-    <tbody style="height: 1500px">
-    <!-- Loop through the list get the each student data -->
-    <tr v-for="item in filteredList" :key='item'>
-      <td><input type="checkbox" v-bind:value='item.url_id' v-model="checked" v-on:change="checkUpdate()" ></td>
-      <td class="text-left p-2">{{ item.url }}</td>
-
-      <td v-if="item.form_factor=='phone'"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16">
-        <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/>
-        <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-      </svg></td>
-      <td v-else ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-laptop" viewBox="0 0 16 16">
-        <path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5h11zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2h-11zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5z"/>
-      </svg></td>
-      <td class="text-left p-2">{{ Math.round(item.good*100)+'%'}}</td>
-      <td class="text-left p-2">{{ Math.round(item.needs_improvement*100)+'%' }}</td>
-      <td class="text-left p-2">{{ Math.round(item.poor*100)+'%' }}</td>
-<!--      <td class="text-left" v-for="field in fields" :key='field'>{{item[field]}}</td>-->
-    </tr>
+    <tbody>
+    <template v-for="(item, index) in filteredList" :key="index">
+      <tr>
+        <td class="align-middle" rowspan="2" >
+          <input type="checkbox" v-bind:value="item.url_id" v-model="checked" v-on:change="checkUpdate()" >
+        </td>
+        <td style="overflow-x:scroll;" class="text-left p-2 align-middle" rowspan="2">
+          <a :href="item.url" target="_blank">{{item.url}}</a>
+        </td>
+        <td class="">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-laptop" viewBox="0 0 16 16">
+            <path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5h11zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2h-11zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5z"/>
+          </svg>
+        </td>
+        <td><ProgressBar :data="item.desktop.lcp"/></td>
+        <td><ProgressBar :data="item.desktop.fid"/></td>
+        <td><ProgressBar :data="item.desktop.cls"/></td>
+      </tr>
+      <tr>
+        <td class="" >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16">
+            <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/>
+            <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg>
+        </td>
+        <td class="" ><ProgressBar :data="item.phone.lcp"/></td>
+        <td class="" ><ProgressBar :data="item.phone.fid"/></td>
+        <td class="" ><ProgressBar :data="item.phone.cls"/></td>
+      </tr>
+    </template>
     </tbody>
+
   </table>
+
 </div>
 </template>
 <script>
 import {computed,ref} from "vue";
 // Importing  the lodash library
-import { sortBy} from 'lodash';
+import { sortBy } from 'lodash';
+import ProgressBar from "@/components/ProgressBar";
 
 export default {
   name: 'TableComponent',
+  components: {
+    ProgressBar
+  },
   props:{
     urlData:{
       type: Array,

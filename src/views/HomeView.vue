@@ -65,7 +65,7 @@ export default {
         this.arrayOfUrls = this.textWithTextarea.split("\n");
         let data = {url:this.arrayOfUrls.filter(i => i.length !== 0).map(i => i.trim())}
         await this.$store.dispatch('analyzeUrl', data);
-        await this.$router.push({path: '/statistics'});
+        await this.$router.push({path: '/didsribution'});
       }
         this.isLoading = false;
 

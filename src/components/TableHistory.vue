@@ -1,11 +1,11 @@
 <template>
   <div class="d-flex">
-    <div class="ml-auto pb-3 pt-3" style="width: 950px">
+    <div class="ml-auto pb-3 pt-3" style="width: 50%">
       <div class="input-group w-100 align-items-center">
-          <input type="text" class="form-control mr-2" style="float: left" placeholder="Enter text for search..." v-model="searchQuery">
+          <input type="text" class="form-control mr-4" style="float: left" placeholder="Enter text for search..." v-model="searchQuery">
       </div>
     </div>
-    <div class="mr-auto pb-3 pt-3" style="width: 425px">
+    <div class="mr-auto pb-3 pt-3" style="width: 25%">
       <div class="btn-group w-100 align-items-center" role="group">
           <button type="button" class="h-75 w-50 mr-2 btn btn-info" v-on:click="viewGraphs">View graphs</button>
           <button type="button" class="h-75 w-50 btn btn-danger" v-on:click="dynamicsOfChange">Dynamics of change</button>

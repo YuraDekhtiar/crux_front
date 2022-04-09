@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading">
+  <div v-if="isElVisible">
     <div class="container">
       <img src="../../public/images/logo.jpeg">
       <div class="row">
@@ -20,19 +20,27 @@
           </div>
         </div>
       </div>
-      <div class="input-group m-3">
-        <textarea type="text"
-                  class="form-control"
-                  placeholder="htttp://example.com/"
-                  aria-describedby="basic-addon2"
-                  v-model="textWithTextarea"
-                  rows="10"
-        />
-      </div>
-      <button @click="analyzeUrls" class="btn btn-info" value="false">ANALYZE</button>
+        <div class="input-group m-3">
+          <textarea type="text"
+                    class="form-control"
+                    placeholder="Input URL..."
+                    aria-describedby="basic-addon2"
+                    v-model="textWithTextarea"
+                    rows="10"
+          />
+        </div>
+      <button @click="isElVisible=!isElVisible" class="btn btn-outline-secondary">ANALYZE</button>
     </div>
   </div>
-  <Preloader v-else/>
+  <div v-else>
+    <p>All data has been successfully downloaded, go to the button to view the dynamics change!</p>
+ <div class="page-analysis_main" >
+    <button @click="analyzeUrls" class="btn btn-outline-secondary" value="false">Review tracking</button>
+ </div>
+
+  </div>
+
+<!--  <Preloader v-else/>-->
 </template>
 
 <script>
@@ -69,7 +77,7 @@ export default {
         this.arrayOfUrls = this.textWithTextarea.split("\n");
         let data = {url:this.arrayOfUrls.filter(i => i.length !== 0).map(i => i.trim())}
         await this.$store.dispatch('analyzeUrl', data);
-        await this.$router.push({path: '/distribution'});
+        await this.$router.push({path: '/didsribution'});
       }
     },
     loadingUrlFromFile(event) {

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isElVisible">
+
     <div class="container">
       <img src="../../public/images/logo.jpeg">
       <div class="row">
@@ -16,6 +16,7 @@
                 accept=".txt" type="file"
                 id="formFile"
                 @change="loadingUrlFromFile"
+                :disabled="validated"
             >
           </div>
         </div>
@@ -27,18 +28,24 @@
                     aria-describedby="basic-addon2"
                     v-model="textWithTextarea"
                     rows="10"
+                    :disabled="validated"
           />
       </div>
-      <button @click="isElVisible=!isElVisible" class="btn btn-info">ANALYZE</button>
-    </div>
+      <div v-if="isElVisible">
+        <button :disabled="isButtonDisabled" @click="isElVisible=!isElVisible; validated = !validated" class="btn btn-info">DOWNLOAD</button>
+      </div>
+      <div v-else>
+        <div v-if="isLoading">
+          <Preloader />
+          <h2>Please wait while the data is processed...</h2>
+         </div>
+        <div v-else>
+          <p style="position: center">All data successfully downloaded!</p>
+        <button @click="analyzeUrls" class="h-75 w-50 btn btn-info" value="false">REVIEW TRACKING</button>
+        </div>
+      </div>
   </div>
-  <div v-else>
-    <p>All data has been successfully downloaded, go to the button to view the dynamics change!</p>
-    <div class="page-analysis_main" >
-      <button @click="analyzeUrls" class="btn btn-info" value="false">Review tracking</button>
-    </div>
-  </div>
-<!-- <Preloader v-else/>-->
+
 </template>
 
 <script>
@@ -57,6 +64,10 @@ export default {
       isElVisible:true ,
       result: [],
       isLoading: true,
+
+      validated: false,
+      // isButtonDisabled: true,
+      // canSend: false,
     }
   },
   mounted() {
@@ -79,7 +90,15 @@ export default {
       reader.onload = e => this.textWithTextarea = e.target.result;
       reader.readAsText(file);
     },
-  }
+  },
+
+  // block button "DOWNLOAD"
+  // watch: {
+  //   send: function() {
+  //     this.canSend = this.textWithTextarea.length >= 2;
+  //     this.isButtonDisabled = !this.canSend;
+  //   }
+  // },
 }
 </script>
 
@@ -109,4 +128,6 @@ button {
   justify-content: space-around;
   margin: 10px  30px;
 }
+
+
 </style>

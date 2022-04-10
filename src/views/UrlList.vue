@@ -3,8 +3,7 @@
     <div class="d-flex">
     <div class="mx-auto p-3" style="width: 27%" >
       <div class="input-group w-100 align-items-center">
-        <input class="form-control mr-2" type="search" placeholder="Search" v-model.trim="search">
-        <button class="btn h-75 mr-2 w-25 btn btn-outline-secondary" type="button" id="search" :onclick="searchUrl">Search</button>
+        <input class="form-control mr-2" type="search" placeholder="Search" v-model="search">
       </div>
     </div>
     <div class="mx-auto p-3" style="width: 27%">
@@ -27,7 +26,7 @@
       </tr>
       </thead>
       <tbody style="height: 1500px">
-      <tr v-for="(item, index) in data" :key="index" >
+      <tr v-for="item in filteredItems" :key="item" >
         <td> <input type="checkbox" v-model="selected" :value="item.id" ></td>
         <td class="text-left p-2">{{ item.url }}</td>
         <td>{{ item.last_tracking_date === null? '' : item.last_tracking_date.substring(0,10)}}</td>
@@ -78,6 +77,11 @@ export default {
         this.selected = selected;
       }
     },
+    filteredItems() {
+      return this.data.filter(elem => {
+        return elem.url.toLowerCase().includes(this.search.toLowerCase());
+      });
+    }
   },
   methods: {
     async fetchData() {
@@ -120,12 +124,6 @@ export default {
       let result = await response.json();
       console.log('Успех:', JSON.stringify(result));
       await this.fetchData();
-    },
-    searchUrl() {
-      if(this.search.length !== 0)
-        this.data = this.responseData.filter(i =>  i.url.indexOf(this.search) > 0)
-      else
-        this.data = this.responseData;
     }
   },
 }

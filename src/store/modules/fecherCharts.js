@@ -9,7 +9,6 @@ export default {
     },
     mutations: {
         setUrlId(state, data) {
-            console.log(data)
             state.urlId = data;
         }
     },
@@ -25,6 +24,7 @@ export default {
             }
         },
         async analyzeUrl(ctx, data) {
+            //ctx.commit('setUrlId', []);
             try {
                 const response = await fetch(`${this.state.backendUrl}/adminPanel/analyze_url`, {
                     method: 'POST',
@@ -35,6 +35,7 @@ export default {
                 }).then(r => {
                     return r.json();
                 });
+                console.log(response)
                 ctx.commit('setUrlId', response.url_id);
             } catch (e) {
                 console.log(e)

@@ -29,6 +29,8 @@
                     v-model="textWithTextarea"
                     rows="10"
                     :disabled="validated"
+                    :change="test"
+
           />
       </div>
       <div v-if="isElVisible">
@@ -66,8 +68,8 @@ export default {
       isLoading: true,
 
       validated: false,
-      // isButtonDisabled: true,
-      // canSend: false,
+      isButtonDisabled: true,
+      canSend: false,
     }
   },
   mounted() {
@@ -89,7 +91,12 @@ export default {
       const reader = new FileReader();
       reader.onload = e => this.textWithTextarea = e.target.result;
       reader.readAsText(file);
+      this.test();
     },
+    test() {
+      this.isButtonDisabled = false;
+      this.canSend = true;
+    }
   },
 
   // block button "DOWNLOAD"

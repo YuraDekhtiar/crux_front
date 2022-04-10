@@ -29,9 +29,9 @@ export default {
     }
   },
   async beforeMount() {
-    await this.fetchData()
+    this.setUrlId([]);
+    await this.fetchData();
     this.isLoading = false;
-
   },
   setup() {
     const fields = [

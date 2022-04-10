@@ -25,7 +25,7 @@
         <th scope="col" class="p-2">Status</th>
       </tr>
       </thead>
-      <tbody style="height: 1500px">
+      <tbody style="height: 721px">
       <tr v-for="item in filteredItems" :key="item" >
         <td> <input type="checkbox" v-model="selected" :value="item.id" ></td>
         <td class="text-left p-2">{{ item.url }}</td>

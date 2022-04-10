@@ -31,7 +31,7 @@
     </tr>
     </thead>
 
-    <tbody style="height: 1500px">
+    <tbody style="height: 721px">
     <template v-for="(item, index) in filteredList" :key="index">
       <tr>
         <td class="align-middle" rowspan="2" >

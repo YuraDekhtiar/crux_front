@@ -7,8 +7,8 @@
     </div>
     <div class="mr-auto pb-3 pt-3" style="width: 25%">
       <div class="btn-group w-100 align-items-center" role="group">
-          <button type="button" class="h-75 w-50 mr-2 btn btn-info" v-on:click="viewGraphs">View graphs</button>
-          <button type="button" class="h-75 w-50 btn btn-info" v-on:click="dynamicsOfChange">Dynamics of change</button>
+          <button type="button" class="h-75 w-50 mr-2 btn btn-info" v-on:click="viewDistributionCharts">View graphs</button>
+          <button type="button" class="h-75 w-50 btn btn-info" v-on:click="viewDynamicsCharts">Dynamics of change</button>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@
     <template v-for="(item, index) in filteredList" :key="index">
       <tr>
         <td class="align-middle" rowspan="2" >
-          <input type="checkbox" v-bind:value="item.url_id" v-model="checked" v-on:change="checkUpdate()" >
+          <input type="checkbox" v-bind:value="item.url_id" v-model="checkedId" v-on:change="checkUpdate()" >
         </td>
         <td style="overflow-x:scroll;" class="text-left p-2 align-middle" rowspan="2">
           <a :href="item.url" target="_blank">{{item.url}}</a>
@@ -56,9 +56,9 @@
             <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
           </svg>
         </td>
-        <td class="" ><ProgressBar :data="item.phone.lcp"/></td>
-        <td class="" ><ProgressBar :data="item.phone.fid"/></td>
-        <td class="" ><ProgressBar :data="item.phone.cls"/></td>
+        <td><ProgressBar :data="item.phone.lcp"/></td>
+        <td><ProgressBar :data="item.phone.fid"/></td>
+        <td><ProgressBar :data="item.phone.cls"/></td>
       </tr>
     </template>
     </tbody>
@@ -89,25 +89,23 @@ export default {
     },
     funcTest: {
       type: Function
-    }
+    },
   },
   data() {
     return{
-      checked: [],
+      checkedId: [],
       checkedAll: false,
     }
   },
-
   methods: {
     checkAll: function() {
       if (!this.checkedAll) {
-        for (let i in this.filteredList) {
-          this.checked.push(this.filteredList[i].url_id);
+        for (const i in this.filteredList) {
+          this.checkedId.push(this.filteredList[i].url_id);
         }
-        console.log(this.checked);
       }
       else
-        this.checked = [];
+        this.checkedId = [];
     },
     checkUpdate: function() {
       if (this.checked.length === this.filteredList.length) {
@@ -115,14 +113,21 @@ export default {
       } else {
         this.checkedAll = false;
       }
+    },
+    viewDistributionCharts: function () {
+      this.$emit('distributionChartsEvent', this.checkedId)
+      this.checkedId = [];
+    },
+    viewDynamicsCharts: function () {
+      this.$emit('dynamicsChartsEvent', this.checkedId)
+      this.$emit('dynamicsChartsEvent', this.checkedId)
+      this.checkedId = [];
     }
   },
-
   setup(props) {
     let sort = ref(false);
     let updatedList =  ref([])
     let searchQuery = ref("");
-
     // a function to sort the table
     const sortTable = (col) => {
       sort.value = true
@@ -138,8 +143,6 @@ export default {
         return props.urlData;
       }
     });
-
-
     // Filter Search
     const filteredList = computed(() => {
       return sortedList.value.filter((product) => {
@@ -148,12 +151,8 @@ export default {
         );
       });
     });
-
-
-
     return {sortedList, sortTable,searchQuery,filteredList}
   }
-
 }
 </script>
 

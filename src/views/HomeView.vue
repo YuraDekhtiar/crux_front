@@ -37,10 +37,8 @@
     <div class="page-analysis_main" >
       <button @click="analyzeUrls" class="btn btn-info" value="false">Review tracking</button>
     </div>
-
   </div>
-
-  <!--  <Preloader v-else/>-->
+<!-- <Preloader v-else/>-->
 </template>
 
 <script>
@@ -54,9 +52,6 @@ export default {
   },
   data() {
     return {
-      data: '',
-      url: '',
-      loading: true,
       textWithTextarea: '',
       arrayOfUrls: [],
       isElVisible:true ,

@@ -18,13 +18,13 @@
         <div class="chart mb-4">
           <img src="../../public/images/fid.svg" class="image" alt="FID">
           <LineChart :data="response.desktop" :labels="response.labels" :keyMetric="'fid'" />
-          <div class="float-left ">X - "Millisecond" | Y - "URL count"</div>
+          <div class="float-left ">X - "Date" | Y - "URL count"</div>
         </div>
         <hr/>
         <div class="chart mb-4">
           <img src="../../public/images/lcp.svg" class="image"  alt="LCP">
           <LineChart :data="response.desktop" :labels="response.labels" :keyMetric="'lcp'" />
-          <div class="float-left ">X - "Millisecond" | Y - "URL count"</div>
+          <div class="float-left ">X - "Date" | Y - "URL count"</div>
         </div>
         <hr/>
       </b-tab>

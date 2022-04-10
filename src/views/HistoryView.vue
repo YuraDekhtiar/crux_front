@@ -1,13 +1,20 @@
 <template>
-  <div v-if="!isLoading">
-      <TableHistory :fields='fields' :urlData ="[...responseData]" :fieldsName="fieldsName"></TableHistory>
+  <Preloader v-if="isLoading"/>
+  <div v-else>
+      <TableHistory
+          :fields='fields'
+          :urlData ="[...responseData]"
+          :fieldsName="fieldsName"
+          @distributionChartsEvent="viewDistributionCharts"
+          @dynamicsChartsEvent="viewDynamicsCharts"
+      />
   </div>
-  <Preloader v-else/>
 
 </template>
 
 <script>
 import TableHistory from '../components/TableHistory.vue'
+import {mapMutations} from "vuex";
 
 export default {
   name: "HistoryView",
@@ -19,7 +26,6 @@ export default {
       responseData: [],
       isLoading: true,
       urlsId: [],
-      urls: [],
     }
   },
   async beforeMount() {
@@ -27,7 +33,6 @@ export default {
     this.isLoading = false;
 
   },
-
   setup() {
     const fields = [
       'url','form_factor','good','needs_improvement','poor'
@@ -40,6 +45,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['setUrlId']),
     async fetchData() {
       try {
         this.responseData = await fetch(`${this.$store.state.backendUrl}/adminPanel/metrics_by_url_id/`, {
@@ -50,6 +56,14 @@ export default {
       }
       this.isLoading = false;
     },
+    viewDistributionCharts(urlsId) {
+      this.setUrlId(urlsId);
+      this.$router.push({path: '/distribution'});
+    },
+    viewDynamicsCharts(urlsId) {
+      this.setUrlId(urlsId);
+      this.$router.push({path: '/dynamics'});
+    }
   }
 }
 </script>

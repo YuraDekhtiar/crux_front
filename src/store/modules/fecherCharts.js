@@ -9,6 +9,7 @@ export default {
     },
     mutations: {
         setUrlId(state, data) {
+            console.log(data)
             state.urlId = data;
         }
     },

@@ -1,27 +1,27 @@
 <template>
 
-    <div class="container">
-      <img src="../../public/images/logo.jpeg">
-      <div class="row">
-        <div class="col-lg">
-          <div class="main-part_input">
-            <label>Enter a URL to analyze </label>
-          </div>
-          <div class="main-part_input">
-            <label>or</label>
-          </div>
-          <div class="main-part_input">
-            <input
-                class="form-control"
-                accept=".txt" type="file"
-                id="formFile"
-                @change="loadingUrlFromFile"
-                :disabled="validated"
-            >
-          </div>
+  <div class="container">
+    <img src="../../public/images/logo.jpeg">
+    <div class="row">
+      <div class="col-lg">
+        <div class="main-part_input">
+          <label>Enter a URL to analyze </label>
+        </div>
+        <div class="main-part_input">
+          <label>or</label>
+        </div>
+        <div class="main-part_input">
+          <input
+              class="form-control"
+              accept=".txt" type="file"
+              id="formFile"
+              @change="loadingUrlFromFile"
+              :disabled="validated"
+          >
         </div>
       </div>
-      <div class="input-group m-3">
+    </div>
+    <div class="input-group m-3">
           <textarea type="text"
                     class="form-control"
                     placeholder="Input URL..."
@@ -29,23 +29,21 @@
                     v-model="textWithTextarea"
                     rows="10"
                     :disabled="validated"
-                    :change="test"
-
           />
-      </div>
-      <div v-if="isElVisible">
-        <button :disabled="isButtonDisabled" @click="isElVisible=!isElVisible; validated = !validated" class="btn btn-info">DOWNLOAD</button>
+    </div>
+    <div v-if="isElVisible">
+      <button :disabled="isButtonDisabled" @click="isElVisible=!isElVisible; validated = !validated" class="btn btn-info">DOWNLOAD</button>
+    </div>
+    <div v-else>
+      <div v-if="isLoading">
+        <Preloader />
+        <h2>Please wait while the data is processed...</h2>
       </div>
       <div v-else>
-        <div v-if="isLoading">
-          <Preloader />
-          <h2>Please wait while the data is processed...</h2>
-         </div>
-        <div v-else>
-          <p style="position: center">All data successfully downloaded!</p>
+        <p style="position: center">All data successfully downloaded!</p>
         <button @click="analyzeUrls" class="h-75 w-50 btn btn-info" value="false">REVIEW TRACKING</button>
-        </div>
       </div>
+    </div>
   </div>
 
 </template>
@@ -68,8 +66,8 @@ export default {
       isLoading: true,
 
       validated: false,
-      isButtonDisabled: true,
-      canSend: false,
+      // isButtonDisabled: true,
+      // canSend: false,
     }
   },
   mounted() {
@@ -91,12 +89,7 @@ export default {
       const reader = new FileReader();
       reader.onload = e => this.textWithTextarea = e.target.result;
       reader.readAsText(file);
-      this.test();
     },
-    test() {
-      this.isButtonDisabled = false;
-      this.canSend = true;
-    }
   },
 
   // block button "DOWNLOAD"
